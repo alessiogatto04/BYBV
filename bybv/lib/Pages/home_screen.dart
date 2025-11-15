@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget{
-  const HomeScreen({
-    super.key
-  })
+  const HomeScreen({super.key});
 
   //vediamo
   @override
@@ -16,7 +14,7 @@ class HomeScreen extends StatelessWidget{
           left: 50,
           child: Text("BYBV",
             style: TextStyle(
-              color: Colors.black,
+              color: Colors.blue,
               fontWeight: FontWeight.bold,
             ),
           ),
