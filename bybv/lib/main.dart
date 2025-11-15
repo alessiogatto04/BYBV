@@ -26,13 +26,6 @@ class BYBVHomePage extends StatefulWidget {
 class _BYBVHomePageState extends State<BYBVHomePage>{
   @override
   Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Become Your Best Version',
-          ),
-          backgroundColor: const Color.fromARGB(255, 30, 136, 229),
-      ),
-    );
+    return Text("BYBV");
   }
 }
