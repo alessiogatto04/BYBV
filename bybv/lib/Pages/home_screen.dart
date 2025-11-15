@@ -5,7 +5,7 @@ class HomeScreen extends StatelessWidget{
     super.key
   })
 
-  //vedidamo
+  //vediamo
   @override
   Widget build(BuildContext context){
     return Stack(
