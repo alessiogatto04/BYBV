@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; //Flutter dispone di tutte le funzionalità, 
+// colori e widget, noti come material component, necessari per lo sviluppo di applicazioni che rispettino i principi del material design.
 
 void main() {
   runApp(const BYBV());
@@ -30,7 +31,7 @@ class _BYBVHomePageState extends State<BYBVHomePage>{
         title: const Text(
           'Become Your Best Version',
           ),
-          backgroundColor: Colors.blue.shade600,
+          backgroundColor: const Color.fromARGB(255, 30, 136, 229),
       ),
     );
   }
