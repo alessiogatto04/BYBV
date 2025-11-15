@@ -4,8 +4,8 @@ class HomeScreen extends StatelessWidget{
   const HomeScreen({
     super.key
   })
-  
-  //Capiamo
+
+  //capiamo
   @override
   Widget build(BuildContext context){
     return Stack(
@@ -24,9 +24,6 @@ class HomeScreen extends StatelessWidget{
 
       ]
     );
-    
-
-
   }
   
 }
