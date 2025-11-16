@@ -6,7 +6,7 @@ class HomeScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    return Scaffold(  // ✅ AGGIUNGI QUESTO - è fondamentale!
+    return Scaffold(  
       backgroundColor: Colors.black,  // Puoi cambiare il colore
       body: Stack(
         children: <Widget> [
@@ -30,14 +30,36 @@ class HomeScreen extends StatelessWidget{
             child:Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                A_L_Button(
-                  text: "Register",
-                  onPressed: (){},
+                SizedBox(
+                  width:150,
+                  height:60,
+                  child: A_L_Button(
+                    text: Text(
+                      "Register",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    onPressed: (){},
+                  ),
                 ),
                 SizedBox(width: 30), // Regola questo numero per lo spazio che vuoi
-                A_L_Button(
-                  text: "Login",
-                  onPressed: (){},
+                SizedBox(
+                  width:150,
+                  height:60,
+                  child: A_L_Button (
+                    text: Text(
+                      "Login",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    onPressed: (){},
+                  ),
                 ),
               ],
             )

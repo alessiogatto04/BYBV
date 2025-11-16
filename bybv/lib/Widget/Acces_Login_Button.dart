@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 export 'package:bybv/Widget/Acces_Login_Button.dart';
 
 class A_L_Button extends StatelessWidget{
-  final String text; // è final perchè è StatelessWidget
+  final Text text; // è final perchè è StatelessWidget
   final VoidCallback onPressed;  //VoidCallBack è una classe che specifica che il cliccare un bottone non effettua nessuan funzione con ritorno
 
   const A_L_Button({
     super.key,          // Super.key serve alla classe superiore per accedere a questo nel widget tree
     required this.text,
-    required this.onPressed
+    required this.onPressed, 
   });
   //required serve per definire che la variabile , in questo caso this.text e onPressed, sono strettamente necessaria da inserire
 
@@ -20,15 +20,12 @@ class A_L_Button extends StatelessWidget{
       style: OutlinedButton.styleFrom(
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
-        side: const BorderSide(color: Colors.white, width: 2),
+        side: const BorderSide(color: Colors.white, width: 1.7),
         shape: RoundedRectangleBorder(      // con shape definiamo la forma di un bottone, nel nostro caso un rettangoo con bordi modificabili e arrotondati di 8 pixel
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(80),
         )
       ),
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)
-      )
+      child: text
     );
   }
 }
