@@ -19,8 +19,8 @@ class A_L_Button extends StatelessWidget{
       onPressed: onPressed, 
       style: OutlinedButton.styleFrom(
         backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black,
-        side: const BorderSide(color: Colors.black, width: 2),
+        foregroundColor: Colors.white,
+        side: const BorderSide(color: Colors.white, width: 2),
         shape: RoundedRectangleBorder(      // con shape definiamo la forma di un bottone, nel nostro caso un rettangoo con bordi modificabili e arrotondati di 8 pixel
           borderRadius: BorderRadius.circular(8),
         )
