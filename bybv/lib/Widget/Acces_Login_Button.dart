@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+export 'package:bybv/Widget/Acces_Login_Button.dart';
 
 class A_L_Button extends StatelessWidget{
   final String text; // è final perchè è StatelessWidget
@@ -29,6 +30,5 @@ class A_L_Button extends StatelessWidget{
         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)
       )
     );
-
   }
 }
