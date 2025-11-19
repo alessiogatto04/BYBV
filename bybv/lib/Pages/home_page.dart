@@ -34,7 +34,32 @@ class HomePage extends StatelessWidget{
       //     ],
       ),
 
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+          child: Row(
+          children: <Widget>[
+            //bisogna inserire CircleAvatar così diventa circolare come le img di profilo
+              //CircleAvatar(
+                //radius: 40, // dimensione dell'immagine
+                //backgroundImage: NetworkImage(
+                //   'images/imgprofile.png'), // sostituisci con l'URL o File
+                // ),
+            Image(image: AssetImage("images/imgprofile.png")),
+
+            SizedBox(width: 16),   //distanza tra immagini e testo
+            Text(
+              "",//nomeUtente da inserire come nel title a riga 11
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+        
+        ],)
+        )
     );
+
+
+
+
+
   }
 
 
