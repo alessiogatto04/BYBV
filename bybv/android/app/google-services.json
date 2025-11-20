@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "657087009134",
+    "project_id": "bybv-69690",
+    "storage_bucket": "bybv-69690.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657087009134:android:69cbc21314f0f48c5bf17f",
+        "android_client_info": {
+          "package_name": "com.example.bybv"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe_0Yi22AnYWPGlsKot-fIkeF7PFZS6AA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
