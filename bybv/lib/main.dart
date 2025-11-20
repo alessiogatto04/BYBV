@@ -21,7 +21,9 @@ class BYBV extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Metodo che costruisce l'interfaccia grafica dell'applicazione
-    return MaterialApp(home: HomeScreen(),);
+    return MaterialApp(
+      home: HomeScreen(),
+      );
   }
 }
 
