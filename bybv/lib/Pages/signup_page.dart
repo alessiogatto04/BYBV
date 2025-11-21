@@ -16,15 +16,29 @@ class _SignUpPageState extends State<SignUpPage> {
 
 Future<void> registerUser() async {
   try {
+    // Stampo i valori prima di inviare
+    print("Email: ${_email.text}");
+    print("Password: ${_password.text}");
+
     await Auth.instance.createUserWithEmailAndPassword(
       email: _email.text,
       password: _password.text,
     );
 
+    // Utente creato
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Utente creato correttamente!")),
+    );
     print("Utente creato correttamente: ${_email.text}");
   } on FirebaseAuthException catch (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Errore Firebase: ${error.code}")),
+    );
     print("Errore Firebase: ${error.code} - ${error.message}");
   } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Altro errore: $e")),
+    );
     print("Altro errore: $e");
   }
 }

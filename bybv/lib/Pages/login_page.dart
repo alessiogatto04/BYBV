@@ -15,14 +15,26 @@ class _LoginPageState extends State<LoginPage>{
   final _password = TextEditingController();
 
 
-  Future<void> signIn() async {
-    try {
-      await Auth().signInWithEmailAndPassword(
-        email: _email.text,
-        password: _password.text,
-      );
-    } on FirebaseAuthException catch (error) {}
+Future<void> signIn() async {
+  try {
+    await Auth.instance.signInWithEmailAndPassword(
+      email: _email.text,
+      password: _password.text,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Login effettuato con successo!")),
+    );
+  } on FirebaseAuthException catch (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Errore Firebase: ${error.code}")),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Altro errore: $e")),
+    );
   }
+}
+
 
 
   @override

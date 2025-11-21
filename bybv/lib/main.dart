@@ -19,24 +19,19 @@ void main() async {
 class BYBV extends StatelessWidget {
   const BYBV({super.key});
 
-
   @override
   Widget build(BuildContext context) {
-    //Metodo che costruisce l'interfaccia grafica dell'applicazione
     return MaterialApp(
       home: StreamBuilder(
-        stream: Auth().authStateChanges,
-        builder: (context, snapshot){
-          if(snapshot.hasData){
+        stream: Auth.instance.authStateChanges, // 🔹 Singleton corretto
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
             return HomePage();
-          }
-          else{
+          } else {
             return HomeScreen();
           }
-        }
-      ) 
-
+        },
+      ),
     );
   }
 }
-
