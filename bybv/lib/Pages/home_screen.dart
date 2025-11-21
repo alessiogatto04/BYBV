@@ -8,12 +8,14 @@ class HomeScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+    //Questi servono per adattare i widget ai vari dispositivi
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
+
     return Scaffold(  
       backgroundColor: Colors.black,  // Puoi cambiare il colore
-      body: Stack(
+      body: Column(
         children: <Widget> [
           Positioned(
             top: screenHeight *0.1,
@@ -28,6 +30,18 @@ class HomeScreen extends StatelessWidget{
             ),
           ),
           
+          Positioned(
+            top: screenHeight * 0.2, // usa una variabile definita
+            left: screenWidth * 0.1,
+            child: Text(
+              "Become Your Best Version",
+              style: TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+                fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+              ),
+            ),
+          ),
           Positioned(
             bottom: screenHeight *0.12,
             left: 0,
