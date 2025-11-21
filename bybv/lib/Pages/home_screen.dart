@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget{
       body: Stack(
         children: <Widget> [
           //video di sfondo 
-          const VideoBackGround(videoPath: "video/homeScreenVideoWiget.mp4"),
+          const VideoBackGround(videoPath: "video/homeScreenVideo.mp4"),
           //Essendo un logo già scontornato non mi serve il circleAvatar ma mi basta semplicemente 
           //fare un positioned
           Positioned(
