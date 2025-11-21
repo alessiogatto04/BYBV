@@ -28,19 +28,30 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 47, 142, 226),
         title: const Text("Registrati"),
       ),
       body: Column(
         children: [
           TextField(
             controller: _email,
-            decoration: const InputDecoration(label: Text("email")),
+            decoration: const InputDecoration(
+              label: Text(
+                "email" , 
+                style: TextStyle(color :Colors.white),
+                ),
+              ),
           ),
           TextField(
             controller: _password,
             obscureText: true,
-            decoration: const InputDecoration(label: Text("password")),
+            style: const TextStyle(color:Colors.white),
+            decoration: const InputDecoration(label: 
+            Text(
+              "password",
+              style: TextStyle(color :Colors.white),
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
