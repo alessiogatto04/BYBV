@@ -14,14 +14,19 @@ class _SignUpPageState extends State<SignUpPage> {
   final _email = TextEditingController();
   final _password = TextEditingController();
 
-  Future<void> registerUser() async {
-    try {
-      await Auth().createUserWithEmailAndPassword(
-        email: _email.text,
-        password: _password.text,
-      );
-    } on FirebaseAuthException catch (error) {}
+Future<void> registerUser() async {
+  try {
+    await Auth().createUserWithEmailAndPassword(
+      email: _email.text,
+      password: _password.text,
+    );
+    print("Utente creato correttamente: ${_email.text}");
+  } on FirebaseAuthException catch (error) {
+    print("Errore Firebase: ${error.code} - ${error.message}");
+  } catch (e) {
+    print("Altro errore: $e");
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,12 @@ class _SignUpPageState extends State<SignUpPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 47, 142, 226),
-        title: const Text("Registrati"),
+        title: const Text("Registrati",
+        style: TextStyle(color :Colors.white),
+        ),
+      iconTheme: const IconThemeData(
+      color: Colors.white, // 🎨 colore della freccia
+      ),
       ),
       body: Column(
         children: [

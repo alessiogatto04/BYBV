@@ -31,9 +31,13 @@ class _LoginPageState extends State<LoginPage>{
     backgroundColor: Colors.black,
     appBar: AppBar(
     backgroundColor: const Color.fromARGB(255, 47, 142, 226),
-
-      // leading: , QUA ANDRA IL LOGO BYBV  
-      title: const Text("Accedi con email e password"),
+      // leading: , QUA ANDRA IL LOGO BYBV 
+      title: const Text("Accedi con email e password",
+      style: TextStyle(color :Colors.white),
+      ),
+      iconTheme: const IconThemeData(
+      color: Colors.white, // 🎨 colore della freccia
+      ),
     ),
     body: Column(
       children: [
