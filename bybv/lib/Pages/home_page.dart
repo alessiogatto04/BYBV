@@ -5,6 +5,9 @@ class HomePage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -33,8 +36,6 @@ class HomePage extends StatelessWidget{
       //         }, icon: Icon(Icons.settings))
       //     ],
       ),
-<<<<<<< HEAD
-=======
       
       body: Column(
         children: [
@@ -113,28 +114,8 @@ class HomePage extends StatelessWidget{
 
         ]        
       )
->>>>>>> refs/remotes/origin/main
 
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-          child: Row(
-          children: <Widget>[
-            //bisogna inserire CircleAvatar così diventa circolare come le img di profilo
-              //CircleAvatar(
-                //radius: 40, // dimensione dell'immagine
-                //backgroundImage: NetworkImage(
-                //   'images/imgprofile.png'), // sostituisci con l'URL o File
-                // ),
-            Image(image: AssetImage("images/imgprofile.png")),
 
-            SizedBox(width: 16),   //distanza tra immagini e testo
-            Text(
-              "",//nomeUtente da inserire come nel title a riga 11
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-        
-        ],)
-        )
     );
 
 
