@@ -1,3 +1,5 @@
+import 'package:bybv/Pages/login_page.dart';
+import 'package:bybv/Pages/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:bybv/Widget/Acces_Login_Button.dart';
 
@@ -45,7 +47,12 @@ class HomeScreen extends StatelessWidget{
                         fontSize: screenWidth *0.045,
                       ),
                     ),
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) => LoginPage()),  
+                      );
+                    },
                   ),
                 ),
                 SizedBox(width: screenWidth *0.08), // Regola questo numero per lo spazio che vuoi
@@ -61,7 +68,12 @@ class HomeScreen extends StatelessWidget{
                         fontSize: screenWidth *0.045,
                       ),
                     ),
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpPage()),  
+                      );
+                    },
                   ),
                 ),
               ],
