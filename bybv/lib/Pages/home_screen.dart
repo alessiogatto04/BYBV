@@ -44,9 +44,9 @@ class HomeScreen extends StatelessWidget{
                   TextSpan(
                       text:"B",
                       style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
                     ),
                   ),
                   TextSpan(

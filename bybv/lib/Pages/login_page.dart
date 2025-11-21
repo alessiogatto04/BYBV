@@ -44,50 +44,149 @@ Future<void> signIn() async {
 
   @override
   Widget build(BuildContext context){
-  return Scaffold(
-    backgroundColor: Colors.black,
-    appBar: AppBar(
-    backgroundColor: const Color.fromARGB(255, 47, 142, 226),
-      // leading: , QUA ANDRA IL LOGO BYBV 
-      title: const Text("Accedi con email e password",
-      style: TextStyle(color :Colors.white),
+    //Questi servono per adattare i widget ai vari dispositivi
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
+  //return Scaffold(
+    //backgroundColor: Colors.black,
+    // appBar: AppBar(
+    // backgroundColor: const Color.fromARGB(255, 47, 142, 226),
+    //   // leading: , QUA ANDRA IL LOGO BYBV 
+    //   title: const Text("Accedi con email e password",
+    //   style: TextStyle(color :Colors.white),
+    //   ),
+    //   iconTheme: const IconThemeData(
+    //   color: Colors.white, // 🎨 colore della freccia
+    //   ),
+    // ),
+//     body: Column(
+//       children: [
+//         TextField(
+//           controller: _email,
+//           style: TextStyle(color :Colors.white),
+//           decoration: InputDecoration(label: Text(
+//             'email',
+//             style: TextStyle(color :Colors.white),
+//             ),
+//           ),
+//         ),
+//         TextField(
+//           controller: _password,
+//           obscureText: true,
+//           style: TextStyle(color :Colors.white),
+//           decoration: InputDecoration(label: Text('password',
+//           style: TextStyle(color :Colors.white),
+//             ),
+//           ),
+//         ),
+//         ElevatedButton(onPressed: (){
+//           signIn();
+//         }, child: Text("Accedi")),
+//         TextButton(onPressed: (){
+//           Navigator.push(
+//             context,
+//               MaterialPageRoute(builder: (context) => SignUpPage()),
+//               );
+//         }, child: Text("Non hai un account? Registrati"))
+//       ],
+//     ),
+//   );
+// }
+
+  return Padding(
+    padding: EdgeInsets.only(
+      left:screenWidth *0.1 ,
+      top: screenHeight * 0.25,
+      right: screenWidth *0.1, 
+      bottom: screenHeight *0.29),
+    child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent,              // colore dello sfondo
+          border: Border.all(
+          color: Colors.white,            // <-- colore del bordo
+          width: 2,                      // spessore
+        ),
+        borderRadius: BorderRadius.circular(10), // opzionale
       ),
-      iconTheme: const IconThemeData(
-      color: Colors.white, // 🎨 colore della freccia
-      ),
-    ),
-    body: Column(
-      children: [
-        TextField(
-          controller: _email,
-          style: TextStyle(color :Colors.white),
-          decoration: InputDecoration(label: Text(
-            'email',
-            style: TextStyle(color :Colors.white),
+      child: Center(
+        child: Column(
+        children:[
+          SizedBox(height: screenHeight * 0.03), //MESSO VALORE A CASO
+          Text(
+              "Login",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.normal,
+                fontSize: screenWidth*0.07,
+              ),
+            ),
+          SizedBox(height: screenHeight * 0.04), //MESSO VALORE A CASO
+          
+          Container(
+            width: screenWidth * 0.6,
+            height: screenHeight * 0.05,
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border.all(color: Colors.white, width: 2),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _email,
+                    style: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      labelText: 'Email',             // più semplice di label: Text(...)
+                      labelStyle: TextStyle(color: Colors.white),
+                      border: InputBorder.none,       // rimuove il bordo interno
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-        TextField(
-          controller: _password,
-          obscureText: true,
-          style: TextStyle(color :Colors.white),
-          decoration: InputDecoration(label: Text('password',
-          style: TextStyle(color :Colors.white),
+
+
+          SizedBox(height: screenHeight * 0.03), //MESSO VALORE A CASO
+         
+          Container(
+            width: screenWidth * 0.6,          // 90% della larghezza dello schermo
+            height: screenHeight * 0.05,
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border.all(
+                color: Colors.white,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(20),
             ),
           ),
+
+          SizedBox(height: screenHeight * 0.09), //MESSO VALORE A CASO
+         
+          Container(
+            width: screenWidth * 0.6,          // 90% della larghezza dello schermo
+            height: screenHeight * 0.05,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                color: Colors.white,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+          )
+
+
+
+          ],
         ),
-        ElevatedButton(onPressed: (){
-          signIn();
-        }, child: Text("Accedi")),
-        TextButton(onPressed: (){
-          Navigator.push(
-            context,
-              MaterialPageRoute(builder: (context) => SignUpPage()),
-              );
-        }, child: Text("Non hai un account? Registrati"))
-      ],
-    ),
+      )
+    )
   );
 }
-
 }
