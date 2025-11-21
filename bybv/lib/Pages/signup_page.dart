@@ -16,10 +16,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
 Future<void> registerUser() async {
   try {
-    await Auth().createUserWithEmailAndPassword(
+    await Auth.instance.createUserWithEmailAndPassword(
       email: _email.text,
       password: _password.text,
     );
+
     print("Utente creato correttamente: ${_email.text}");
   } on FirebaseAuthException catch (error) {
     print("Errore Firebase: ${error.code} - ${error.message}");
