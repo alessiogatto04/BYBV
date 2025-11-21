@@ -11,6 +11,15 @@ class HomePage extends StatelessWidget{
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+      backgroundColor: const Color.fromARGB(255, 47, 142, 226),
+        // leading: , QUA ANDRA IL LOGO BYBV 
+        title: const Text("Qui ci vuole il nome dell'utente",
+        style: TextStyle(color :Colors.white),
+        ),
+        iconTheme: const IconThemeData(
+        color: Colors.white, // 🎨 colore della freccia
+        ),
+      ),
         // title: --> bisognerà inserire il nome dell'utente. dobbiamo prima fare il firebase e capire come si fa
         // leading: TextButton(      //mi posiziona il child sulla sinistra
         //   onPressed: (){
@@ -35,7 +44,6 @@ class HomePage extends StatelessWidget{
       //           );
       //         }, icon: Icon(Icons.settings))
       //     ],
-      ),
       
       body: Column(
         children: [
