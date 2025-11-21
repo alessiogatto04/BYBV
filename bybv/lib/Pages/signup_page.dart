@@ -35,16 +35,20 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           TextField(
             controller: _email,
+            //questo style serve per il colore della scritta che inseriamo
+            style: const TextStyle(color:Colors.white),
             decoration: const InputDecoration(
               label: Text(
                 "email" , 
-                style: TextStyle(color :Colors.white),
+                style: TextStyle(color :Colors.white), //questo style come anche quello sotto , 
+                //inseriti nell'Input decoration servono a colorare di bianco le intestazione dell'input decoration
                 ),
               ),
           ),
           TextField(
             controller: _password,
             obscureText: true,
+            //questo style serve per il colore dei pallini e della scritta man mano che inseriamo
             style: const TextStyle(color:Colors.white),
             decoration: const InputDecoration(label: 
             Text(

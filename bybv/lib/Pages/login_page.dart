@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage>{
   return Scaffold(
     backgroundColor: Colors.black,
     appBar: AppBar(
-    backgroundColor: const Color.fromARGB(255, 50, 50, 50),
+    backgroundColor: const Color.fromARGB(255, 47, 142, 226),
 
       // leading: , QUA ANDRA IL LOGO BYBV  
       title: const Text("Accedi con email e password"),
@@ -39,12 +39,21 @@ class _LoginPageState extends State<LoginPage>{
       children: [
         TextField(
           controller: _email,
-          decoration: InputDecoration(label: Text('email')),
+          style: TextStyle(color :Colors.white),
+          decoration: InputDecoration(label: Text(
+            'email',
+            style: TextStyle(color :Colors.white),
+            ),
+          ),
         ),
         TextField(
           controller: _password,
           obscureText: true,
-          decoration: InputDecoration(label: Text('password')),
+          style: TextStyle(color :Colors.white),
+          decoration: InputDecoration(label: Text('password',
+          style: TextStyle(color :Colors.white),
+            ),
+          ),
         ),
         ElevatedButton(onPressed: (){
           signIn();
