@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget{
           
           //Uso la classe RichText con TextSpan che mi permette di applicare stili diversi a parti diverse del testo in
           Positioned(
-            top: screenHeight * 0.667, // usa una variabile definita
+            top: screenHeight * 0.713, // usa una variabile definita
             left: screenWidth * 0.1,
             child: RichText(
               text: TextSpan(
@@ -118,7 +118,7 @@ class HomeScreen extends StatelessWidget{
             ),
           ),
           Positioned(
-            bottom: screenHeight *0.12,
+            bottom: screenHeight *0.08,
             left: 0,
             right: 0,
             child:Row(
@@ -126,7 +126,7 @@ class HomeScreen extends StatelessWidget{
               children: [
                 SizedBox(
                   width:screenWidth *0.40,
-                  height:screenHeight *0.075,
+                  height:screenHeight *0.080,
                   child: A_L_Button(
                     text: Text(
                       "Register",
@@ -147,7 +147,7 @@ class HomeScreen extends StatelessWidget{
                 SizedBox(width: screenWidth *0.08), // Regola questo numero per lo spazio che vuoi
                 SizedBox(
                   width:screenWidth *0.40,
-                  height:screenHeight *0.075,
+                  height:screenHeight *0.080,
                   child: A_L_Button (
                     text: Text(
                       "Login",
