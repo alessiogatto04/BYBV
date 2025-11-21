@@ -15,30 +15,102 @@ class HomeScreen extends StatelessWidget{
 
     return Scaffold(  
       backgroundColor: Colors.black,  // Puoi cambiare il colore
-      body: Column(
+      body: Stack(
         children: <Widget> [
+          
           Positioned(
             top: screenHeight *0.1,
             left: screenWidth *0.1,
             child: Text(
               "BYBV",
               style: TextStyle(
-                color: Colors.blue,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: screenWidth *0.06,
               ),
             ),
           ),
           
+          //Uso la classe RichText con TextSpan che mi permette di applicare stili diversi a parti diverse del testo in
           Positioned(
-            top: screenHeight * 0.2, // usa una variabile definita
+            top: screenHeight * 0.667, // usa una variabile definita
             left: screenWidth * 0.1,
-            child: Text(
-              "Become Your Best Version",
-              style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-                fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                      text:"B",
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+                    ),
+                  ),
+                  TextSpan(
+                    text:"ecome ",
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+                    ),
+                  ),
+                  TextSpan(
+                    text:"Y",
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+                    ),
+                  ),
+                  TextSpan(
+                    text:"our ",
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+                    ),
+                  ),
+                  TextSpan(
+                    text:"B",
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+                    ),
+                  ),
+                  TextSpan(
+                    text:"est ",
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+                    ),
+                  ),
+                TextSpan(
+                    text:"V",
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+                    ),
+                  ),
+                  TextSpan(
+                    text:"ersion \n",
+                      style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+                    ),
+                  ),
+                  TextSpan(
+                    text:"La tua forza parte da qui. \nAllenati con noi.",
+                      style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.normal,
+                      fontSize: screenWidth * 0.06, // dimensione testo proporzionale alla larghezza
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
