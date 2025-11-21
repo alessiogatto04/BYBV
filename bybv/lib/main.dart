@@ -1,4 +1,6 @@
 import 'package:bybv/Pages/home_page.dart';
+import 'package:bybv/Pages/login.dart';
+import 'package:bybv/auth.dart';
 import 'package:flutter/material.dart'; //Flutter dispone di tutte le funzionalità, 
 // colori e widget, noti come material component, necessari per lo sviluppo di applicazioni che rispettino i principi del material design.
 
@@ -15,7 +17,20 @@ class BYBV extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Metodo che costruisce l'interfaccia grafica dell'applicazione
-    return MaterialApp(home: HomeScreen(),);
+    return MaterialApp(
+      home: StreamBuilder(
+        stream: Auth().authStateChanges,
+        builder: (context, snapshot){
+          if(snapshot.hasData){
+            return HomePage();
+          }
+          else{
+            return LoginPage();
+          }
+        }
+      ) 
+
+    );
   }
 }
 
