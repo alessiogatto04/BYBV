@@ -27,8 +27,8 @@ class _HomePageState extends State<HomePage> {
         style: TextStyle(color :Colors.white),
         ),
         actions: [
-          IconButton(onPressed: (){
-            signOut();
+          IconButton(onPressed: () async{
+            await signOut();
           }, icon: Icon(Icons.logout))
         ],
         iconTheme: const IconThemeData(
