@@ -1,3 +1,4 @@
+import 'package:bybv/Pages/home_screen.dart';
 import 'package:bybv/auth.dart';
 import 'package:flutter/material.dart';
 
@@ -29,10 +30,14 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(onPressed: () async{
             await signOut();
+            Navigator.pushReplacement(
+              context, 
+              MaterialPageRoute(builder: (context) => HomeScreen())
+              );
           }, icon: Icon(Icons.logout))
         ],
         iconTheme: const IconThemeData(
-        color: Colors.white, // 🎨 colore della freccia
+        color: Colors.white, // colore della freccia
         ),
       ),
         // title: --> bisognerà inserire il nome dell'utente. dobbiamo prima fare il firebase e capire come si fa

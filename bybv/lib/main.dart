@@ -23,7 +23,7 @@ class BYBV extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: StreamBuilder(
-        stream: Auth.instance.authStateChanges, // 🔹 Singleton corretto
+        stream: Auth.instance.authStateChanges, //  Singleton corretto
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return HomePage();
