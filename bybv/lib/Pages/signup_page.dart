@@ -1,3 +1,4 @@
+import 'package:bybv/Pages/home_page.dart';
 import 'package:bybv/Pages/login_page.dart';
 import 'package:bybv/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,6 +31,12 @@ Future<void> registerUser() async {
       const SnackBar(content: Text("Utente creato correttamente!")),
     );
     print("Utente creato correttamente: ${_email.text}");
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+    );
+
   } on FirebaseAuthException catch (error) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Errore Firebase: ${error.code}")),

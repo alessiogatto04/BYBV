@@ -1,3 +1,4 @@
+import 'package:bybv/Pages/home_page.dart';
 import 'package:bybv/Pages/signup_page.dart';
 import 'package:bybv/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,6 +21,10 @@ Future<void> signIn() async {
     await Auth.instance.signInWithEmailAndPassword(
       email: _email.text,
       password: _password.text,
+    );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
     );
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Login effettuato con successo!")),
