@@ -1,5 +1,6 @@
 import 'package:bybv/Pages/login_page.dart';
 import 'package:bybv/Pages/signup_page.dart';
+import 'package:bybv/Widget/Video_Back_Ground_Widget.dart';
 import 'package:flutter/material.dart';
 import 'package:bybv/Widget/Acces_Login_Button.dart';
 
@@ -17,17 +18,18 @@ class HomeScreen extends StatelessWidget{
       backgroundColor: Colors.black,  // Puoi cambiare il colore
       body: Stack(
         children: <Widget> [
-          
+          //video di sfondo 
+          const VideoBackGround(videoPath: "video/homeScreenVideoWiget.mp4"),
+          //Essendo un logo già scontornato non mi serve il circleAvatar ma mi basta semplicemente 
+          //fare un positioned
           Positioned(
-            top: screenHeight *0.1,
-            left: screenWidth *0.1,
-            child: Text(
-              "BYBV",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: screenWidth *0.06,
-              ),
+            top: screenHeight * 0.050,
+            left: screenWidth * 0.1,
+            child: Image.asset(
+              "images/imglogo.png",
+              width: 70,
+              height: 70,
+              fit: BoxFit.contain,
             ),
           ),
           
@@ -38,6 +40,7 @@ class HomeScreen extends StatelessWidget{
             child: RichText(
               text: TextSpan(
                 children: [
+
                   TextSpan(
                       text:"B",
                       style: TextStyle(
