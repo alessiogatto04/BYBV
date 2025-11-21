@@ -5,9 +5,6 @@ class HomePage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -36,85 +33,27 @@ class HomePage extends StatelessWidget{
       //         }, icon: Icon(Icons.settings))
       //     ],
       ),
-      
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-              child: Row(
-              children: <Widget>[
-                //bisogna inserire CircleAvatar così diventa circolare come le img di profilo
-                  CircleAvatar(
-                    radius: 40, // dimensione dell'immagine
-                    backgroundImage:AssetImage("images/imgprofile.png")
-                  ),
 
-                SizedBox(width: 16),   //distanza tra immagini e testo
-                Text(
-                  "",//nomeUtente da inserire come nel title a riga 11
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-            
-            ],)
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+          child: Row(
+          children: <Widget>[
+            //bisogna inserire CircleAvatar così diventa circolare come le img di profilo
+              //CircleAvatar(
+                //radius: 40, // dimensione dell'immagine
+                //backgroundImage: NetworkImage(
+                //   'images/imgprofile.png'), // sostituisci con l'URL o File
+                // ),
+            Image(image: AssetImage("images/imgprofile.png")),
 
-          SizedBox(height: screenHeight* 0.01),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ElevatedButton(onPressed: (){},
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20) // MESSO VALORE A CASO, CONTROLLATE E AGGIUSTATE CON L'EMULATORE
-                  ),
-                  backgroundColor: const Color.fromARGB(255, 50, 50, 50)
-                ),
-                child: Text(
-                "Statistiche",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              )),
-
-              SizedBox(width: screenWidth * 0.05), //MESSO VALORE A CASO
-
-              ElevatedButton(onPressed: (){},
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)
-                  ),
-                  backgroundColor: const Color.fromARGB(255, 50, 50, 50)
-                ),
-                child: Text(
-                "Esercizi",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              )),
-            ],
-          ),
-
-          SizedBox(height: screenHeight*0.01),
-          // ElevatedButton(onPressed: (){},       HO COMPLETAMENTE SBAGLIATO ANDREBBE INSERITO IL CALENDARIO, DA CAPIRE COME SI FA
-          //   style: ElevatedButton.styleFrom(
-          //     shape: RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.circular(20),
-          //     ),
-          //     backgroundColor:  const Color.fromARGB(255, 50, 50, 50)
-          //   ),
-          // child: Text(
-          //   ""
-          // ))          
-
-
-        ]        
-      )
-
-
+            SizedBox(width: 16),   //distanza tra immagini e testo
+            Text(
+              "",//nomeUtente da inserire come nel title a riga 11
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+        
+        ],)
+        )
     );
 
 
