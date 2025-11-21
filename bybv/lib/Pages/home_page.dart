@@ -1,8 +1,18 @@
+import 'package:bybv/auth.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget{
-  const HomePage({super.key});
+class HomePage extends StatefulWidget{
+  const HomePage({Key? key}): super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  Future<void> signOut() async{
+    await Auth.instance.signOut();
+  }
   @override
   Widget build(BuildContext context){
     double screenWidth = MediaQuery.of(context).size.width;
@@ -16,6 +26,11 @@ class HomePage extends StatelessWidget{
         title: const Text("Qui ci vuole il nome dell'utente",
         style: TextStyle(color :Colors.white),
         ),
+        actions: [
+          IconButton(onPressed: () async{
+            await signOut();
+          }, icon: Icon(Icons.logout))
+        ],
         iconTheme: const IconThemeData(
         color: Colors.white, // 🎨 colore della freccia
         ),
