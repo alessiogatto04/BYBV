@@ -4,6 +4,8 @@ import 'package:bybv/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -14,6 +16,8 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _email = TextEditingController();
   final _password = TextEditingController();
+  final _username = TextEditingController();
+
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -42,6 +46,23 @@ class _SignUpPageState extends State<SignUpPage> {
       password: passwordController.text.trim(),
     );
   }
+
+  Future<void> salvaUsername(String username) async {
+  try {
+    // Ottieni riferimento alla collezione "utenti"
+    CollectionReference utenti = FirebaseFirestore.instance.collection('utenti');
+
+    // Aggiungi un documento con campo "username"
+    await utenti.add({
+      'username': username,
+      'timestamp': FieldValue.serverTimestamp(), // opzionale
+    });
+
+    print("Username salvato con successo!");
+  } catch (e) {
+    print("Errore nel salvare username: $e");
+  }
+}
 
 Future<void> registerUser() async {
   try {
@@ -146,7 +167,8 @@ Future<void> registerUser() async {
                         fontSize: screenWidth*0.07,
                       ),
                     ),
-                  SizedBox(height: screenHeight * 0.04), 
+
+                  SizedBox(height: screenHeight * 0.041), 
                   Container(
                     width: screenWidth * 0.6,
                     height: screenHeight * 0.05,
@@ -190,8 +212,53 @@ Future<void> registerUser() async {
                   ),
 
 
-                  SizedBox(height: screenHeight * 0.03),
+                  SizedBox(height: screenHeight * 0.023),
+                  
+                  Container(
+                    width: screenWidth * 0.6,
+                    height: screenHeight * 0.05,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      border: Border.all(color: Colors.white, width: 2),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _username,  
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              hintText: 'Username',
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Poppins',
+                              ),             
+                              labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Poppins',
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:EdgeInsets.only(
+                              right: screenWidth *0.030, 
+                          ),
+                          child: Icon(
+                            Icons.account_circle,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 
+                SizedBox(height: screenHeight * 0.023),
+
+
                   Container(
                     width: screenWidth * 0.6,          // 90% della larghezza dello schermo
                     height: screenHeight * 0.05,
@@ -234,7 +301,7 @@ Future<void> registerUser() async {
                     ),
                   ),
 
-                  SizedBox(height: screenHeight * 0.09), //MESSO VALORE A CASO
+                  SizedBox(height: screenHeight * 0.065), 
                 
                   Container(
                     width: screenWidth * 0.6,          // 90% della larghezza dello schermo
@@ -248,7 +315,17 @@ Future<void> registerUser() async {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child:ElevatedButton(onPressed: (){
-                        validateInputs(_email.text.trim(), _password.text.trim());
+                        validateInputs(_email.text.trim(), _password.text.trim());  //trim toglie gli spazi a inizio e fine riga
+                        String username = _username.text.trim();
+                        if(username.isNotEmpty) {
+                          salvaUsername(username); // salva su Firestore
+                        } else {
+                            // mostra errore se vuoto
+                            ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Inserisci un username"))
+                            );
+                        }
+
                         }, child: Text(
                           "Registrati",
                           style: TextStyle(

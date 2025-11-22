@@ -23,9 +23,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-      backgroundColor: const Color.fromARGB(255, 47, 142, 226),
-        // leading: , QUA ANDRA IL LOGO BYBV 
-        title: const Text("Qui ci vuole il nome dell'utente",
+        backgroundColor: Colors.black,
+
+        centerTitle: true,  //centra il titolo
+        title: Image.asset(
+          'images/imgLogo.png',
+          width: screenWidth *0.12,
+          height: screenHeight*0.12,
+        ),
+        leading: const Text("Qui ci vuole il nome dell'utente",
         style: TextStyle(color :Colors.white),
         ),
         actions: [
@@ -36,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                 MaterialPageRoute(builder: (context) => Modifica()),
                 );
             }, icon: Icon(Icons.settings)),
-            
+
           IconButton(onPressed: () async{
             await signOut();
             Navigator.pushReplacement(
