@@ -57,13 +57,25 @@ Future<void> signIn() async {
       color: Colors.white,
       ),
     ),
-
-      body: Padding(
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              left: screenWidth * 0.35,
+              top: screenHeight * 0.12,
+              right: screenWidth * 0.35,
+              bottom: screenWidth * 0.75,
+            ), 
+              child: Image(
+                image: const AssetImage('images/imglogo.png'),  
+              ),
+          ),
+          Padding(
         padding: EdgeInsets.only(
           left:screenWidth *0.1 ,
-          top: screenHeight * 0.25,
+          top: screenHeight * 0.12,
           right: screenWidth *0.1, 
-          bottom: screenHeight *0.29),
+          bottom: screenHeight *0.17),
         child: Container(
             decoration: BoxDecoration(
               color: Colors.black,              // colore dello sfondo
@@ -204,7 +216,10 @@ Future<void> signIn() async {
           ),
         )
       ),
-    ),
+    ), 
+        ],
+      ),
+      
   );
 }
 }
