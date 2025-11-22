@@ -67,7 +67,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
     - images/imglogo.png
     - video/homeScreenVideo.mp4
-    - images/Google_G_logo.png
+    - images/googleLogo.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
