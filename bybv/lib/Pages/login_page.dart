@@ -69,13 +69,23 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
+     
       body: Stack(
         children: <Widget>[
-          Image(image: const AssetImage('images/imgLogIn.png'),),
+          Image(
+            image: const AssetImage('images/imgLogIn.png'),
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          
+          AppBar(
+            
+            backgroundColor: Colors.transparent,
+            iconTheme: const IconThemeData(
+              color: Colors.white
+              ),
+          ),
 
           Column(
             children: [
@@ -99,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: Colors.transparent,
                     border: Border.all(color: Colors.white, width: 2),
                     borderRadius: BorderRadius.circular(10),
                   ),

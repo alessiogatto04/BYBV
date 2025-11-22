@@ -86,18 +86,23 @@ Future<void> registerUser() async {
 
     return Scaffold(
     backgroundColor: Colors.black,
-    appBar: AppBar(
-    backgroundColor: Colors.black,
-      
-      iconTheme: const IconThemeData(
-      color: Colors.white,
-      ),
-    ),
 
     body: Stack(
-      children: [
-          Image(image: const AssetImage('images/imgSignUp.png'),),
+      children: <Widget> [
+          Image(
+            image: const AssetImage('images/imgSignUp.png'),
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+          ),
       
+          AppBar(
+            backgroundColor: Colors.transparent,
+              iconTheme: const IconThemeData(
+              color: Colors.white,
+              ),
+            ),
+
         Column(
         children: [
           Padding(
@@ -120,7 +125,7 @@ Future<void> registerUser() async {
               bottom: screenHeight *0.17),
             child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black,              // colore dello sfondo
+                  color: Colors.transparent,              // colore dello sfondo
                   border: Border.all(
                   color: Colors.white,            // colore del bordo
                   width: 2,                      // spessore
@@ -132,7 +137,7 @@ Future<void> registerUser() async {
                 children:[
                   SizedBox(height: screenHeight * 0.03), 
                   Text(
-                      "Registrazione",
+                      "Registrati",
                       style: TextStyle(
                         fontFamily: 'Poppins-Bold',
                         color: Colors.white,
@@ -273,6 +278,7 @@ Future<void> registerUser() async {
                             style: TextStyle(
                               color:Colors.white,
                               fontFamily: 'Poppins-Bold',
+                              fontWeight: FontWeight.bold,
                               // fontWeight: FontWeight.bold,
                             ),
                           ),
