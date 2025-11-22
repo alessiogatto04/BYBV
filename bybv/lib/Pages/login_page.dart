@@ -62,9 +62,9 @@ Future<void> signIn() async {
           Padding(
             padding: EdgeInsets.only(
               left: screenWidth * 0.35,
-              top: screenHeight * 0.12,
+              top: screenHeight * 0.025,
               right: screenWidth * 0.35,
-              bottom: screenWidth * 0.75,
+              bottom: screenWidth * 0,
             ), 
               child: Image(
                 image: const AssetImage('images/imglogo.png'),  
@@ -73,7 +73,7 @@ Future<void> signIn() async {
           Padding(
         padding: EdgeInsets.only(
           left:screenWidth *0.1 ,
-          top: screenHeight * 0.12,
+          top: screenHeight * 0.10,
           right: screenWidth *0.1, 
           bottom: screenHeight *0.17),
         child: Container(

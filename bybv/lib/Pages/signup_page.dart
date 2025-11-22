@@ -33,7 +33,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     print("OK, puoi creare l'account");
-    createUser();          // ---> CHIAMI FIREBASE SOLO QUI
+    createUser();          
   }
 
   Future<void> createUser() async {
@@ -99,9 +99,9 @@ Future<void> registerUser() async {
           Padding(
             padding: EdgeInsets.only(
               left: screenWidth * 0.35,
-              top: screenHeight * 0.12,
+              top: screenHeight * 0.025,
               right: screenWidth * 0.35,
-              bottom: screenWidth * 0.75,
+              bottom: screenWidth * 0,
             ), 
               child: Image(
                 image: const AssetImage('images/imglogo.png'),  
