@@ -99,7 +99,7 @@ Future<void> registerUser() async {
           Padding(
             padding: EdgeInsets.only(
               left: screenWidth * 0.35,
-              top: screenHeight * 0.025,
+              top: screenHeight * 0.017,
               right: screenWidth * 0.35,
               bottom: screenWidth * 0,
             ), 
@@ -244,11 +244,26 @@ Future<void> registerUser() async {
                     context,
                     MaterialPageRoute(builder: (context) => LoginPage()),
                   );
-                  }, child: Text(
-                      "Hai già un account? Accedi",
-                      style: TextStyle(
-                          color:Colors.white,
-                      ),))
+                  }, child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text:"Hai già un account? ",
+                            style: TextStyle(
+                              color:Colors.white,
+                            ),
+                          ),
+                          TextSpan(
+                            text:"Accedi",
+                            style: TextStyle(
+                              color:Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      )
+                    ),
+                  )
                 ],
               ),
             )
