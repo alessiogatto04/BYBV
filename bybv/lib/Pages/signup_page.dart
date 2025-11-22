@@ -15,6 +15,34 @@ class _SignUpPageState extends State<SignUpPage> {
   final _email = TextEditingController();
   final _password = TextEditingController();
 
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+  final passwordRegex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$');
+
+  void validateInputs(String email, String password) {
+    if (!emailRegex.hasMatch(email)) {
+      print("Email non valida");
+      return;
+    }
+
+    if (!passwordRegex.hasMatch(password)) {
+      print("Password non valida");
+      return;
+    }
+
+    print("OK, puoi creare l'account");
+    createUser();          // ---> CHIAMI FIREBASE SOLO QUI
+  }
+
+  Future<void> createUser() async {
+    await Auth.instance.createUserWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+  }
+
 Future<void> registerUser() async {
   try {
     // Stampo i valori prima di inviare
@@ -50,61 +78,168 @@ Future<void> registerUser() async {
   }
 }
 
-  @override
-  Widget build(BuildContext context) {
+@override
+  Widget build(BuildContext context){
+    //Questi servono per adattare i widget ai vari dispositivi
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 47, 142, 226),
-        title: const Text("Registrati",
-        style: TextStyle(color :Colors.white),
-        ),
+    backgroundColor: Colors.black,
+    appBar: AppBar(
+    backgroundColor: Colors.black,
+      
       iconTheme: const IconThemeData(
-      color: Colors.white, // 🎨 colore della freccia
+      color: Colors.white,
       ),
-      ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _email,
-            //questo style serve per il colore della scritta che inseriamo
-            style: const TextStyle(color:Colors.white),
-            decoration: const InputDecoration(
-              label: Text(
-                "email" , 
-                style: TextStyle(color :Colors.white), //questo style come anche quello sotto , 
-                //inseriti nell'Input decoration servono a colorare di bianco le intestazione dell'input decoration
+    ),
+
+      body: Padding(
+        padding: EdgeInsets.only(
+          left:screenWidth *0.1 ,
+          top: screenHeight * 0.25,
+          right: screenWidth *0.1, 
+          bottom: screenHeight *0.29),
+        child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black,              // colore dello sfondo
+              border: Border.all(
+              color: Colors.white,            // colore del bordo
+              width: 2,                      // spessore
+            ),
+            borderRadius: BorderRadius.circular(10), 
+          ),
+          child: Center(
+            child: Column(
+            children:[
+              SizedBox(height: screenHeight * 0.03), 
+              Text(
+                  "Registrati",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.normal,
+                    fontSize: screenWidth*0.07,
+                  ),
+                ),
+              SizedBox(height: screenHeight * 0.04), 
+              Container(
+                width: screenWidth * 0.6,
+                height: screenHeight * 0.05,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(color: Colors.white, width: 2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _email,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'Email',             
+                          labelStyle: TextStyle(color: Colors.white),
+                          border: InputBorder.none,       // rimuove il bordo interno
+                          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:EdgeInsets.only(
+                        right: screenWidth *0.030, 
+                        ),
+                      child:  Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                      ),
+                  ],
                 ),
               ),
-          ),
-          TextField(
-            controller: _password,
-            obscureText: true,
-            //questo style serve per il colore dei pallini e della scritta man mano che inseriamo
-            style: const TextStyle(color:Colors.white),
-            decoration: const InputDecoration(label: 
-            Text(
-              "password",
-              style: TextStyle(color :Colors.white),
+
+
+              SizedBox(height: screenHeight * 0.03),
+            
+              Container(
+                width: screenWidth * 0.6,          // 90% della larghezza dello schermo
+                height: screenHeight * 0.05,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _password,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          labelText: 'Password',             // più semplice di label: Text(...)
+                          labelStyle: TextStyle(color: Colors.white),
+                          border: InputBorder.none,       // rimuove il bordo interno
+                          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:EdgeInsets.only(
+                        right: screenWidth *0.030, 
+                        ),
+                      child:  Icon(
+                          Icons.lock_outline,
+                          color: Colors.white,
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              registerUser();
-            },
-            child: const Text("Crea Account"),
-          ),
-          TextButton(
-            onPressed: () {
+
+              SizedBox(height: screenHeight * 0.09), //MESSO VALORE A CASO
+            
+              Container(
+                width: screenWidth * 0.6,          // 90% della larghezza dello schermo
+                height: screenHeight * 0.05,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child:ElevatedButton(onPressed: (){
+                    validateInputs(_email.text.trim(), _password.text.trim());
+                    }, child: Text(
+                      "Registrati",
+                      style: TextStyle(
+                        color:Colors.black),
+                    )
+                ),
+              ),
+
+              SizedBox(height: screenHeight * 0.003), 
+
+              TextButton(onPressed: (){
+              
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginPage())); // torna al login
-            },
-            child: const Text("Hai già un account? Accedi"),
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
+              }, child: Text(
+                  "Hai già un account? Accedi",
+                  style: TextStyle(
+                      color:Colors.white,
+                  ),))
+            ],
           ),
-        ],
+        )
       ),
-    );
-  }
+    ),
+  );
+}
 }

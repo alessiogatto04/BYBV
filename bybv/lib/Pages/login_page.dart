@@ -50,49 +50,13 @@ Future<void> signIn() async {
 
     return Scaffold(
     backgroundColor: Colors.black,
-    // appBar: AppBar(
-    // backgroundColor: const Color.fromARGB(255, 47, 142, 226),
-    //   // leading: , QUA ANDRA IL LOGO BYBV 
-    //   title: const Text("Accedi con email e password",
-    //   style: TextStyle(color :Colors.white),
-    //   ),
-    //   iconTheme: const IconThemeData(
-    //   color: Colors.white, // 🎨 colore della freccia
-    //   ),
-    // ),
-//     body: Column(
-//       children: [
-//         TextField(
-//           controller: _email,
-//           style: TextStyle(color :Colors.white),
-//           decoration: InputDecoration(label: Text(
-//             'email',
-//             style: TextStyle(color :Colors.white),
-//             ),
-//           ),
-//         ),
-//         TextField(
-//           controller: _password,
-//           obscureText: true,
-//           style: TextStyle(color :Colors.white),
-//           decoration: InputDecoration(label: Text('password',
-//           style: TextStyle(color :Colors.white),
-//             ),
-//           ),
-//         ),
-//         ElevatedButton(onPressed: (){
-//           signIn();
-//         }, child: Text("Accedi")),
-//         TextButton(onPressed: (){
-//           Navigator.push(
-//             context,
-//               MaterialPageRoute(builder: (context) => SignUpPage()),
-//               );
-//         }, child: Text("Non hai un account? Registrati"))
-//       ],
-//     ),
-//   );
-// }
+    appBar: AppBar(
+    backgroundColor: Colors.black,
+      
+      iconTheme: const IconThemeData(
+      color: Colors.white,
+      ),
+    ),
 
       body: Padding(
         padding: EdgeInsets.only(
@@ -104,15 +68,15 @@ Future<void> signIn() async {
             decoration: BoxDecoration(
               color: Colors.black,              // colore dello sfondo
               border: Border.all(
-              color: Colors.white,            // <-- colore del bordo
+              color: Colors.white,            // colore del bordo
               width: 2,                      // spessore
             ),
-            borderRadius: BorderRadius.circular(10), // opzionale
+            borderRadius: BorderRadius.circular(10), 
           ),
           child: Center(
             child: Column(
             children:[
-              SizedBox(height: screenHeight * 0.03), //MESSO VALORE A CASO
+              SizedBox(height: screenHeight * 0.03), 
               Text(
                   "Login",
                   style: TextStyle(
@@ -139,7 +103,7 @@ Future<void> signIn() async {
                         controller: _email,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          labelText: 'Email',             // più semplice di label: Text(...)
+                          labelText: 'Email',            
                           labelStyle: TextStyle(color: Colors.white),
                           border: InputBorder.none,       // rimuove il bordo interno
                           contentPadding: EdgeInsets.symmetric(horizontal: 20),
@@ -160,7 +124,7 @@ Future<void> signIn() async {
               ),
 
 
-              SizedBox(height: screenHeight * 0.03), //MESSO VALORE A CASO
+              SizedBox(height: screenHeight * 0.03), 
             
               Container(
                 width: screenWidth * 0.6,          // 90% della larghezza dello schermo
@@ -180,7 +144,7 @@ Future<void> signIn() async {
                         controller: _email,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          labelText: 'Password',             // più semplice di label: Text(...)
+                          labelText: 'Password',             
                           labelStyle: TextStyle(color: Colors.white),
                           border: InputBorder.none,       // rimuove il bordo interno
                           contentPadding: EdgeInsets.symmetric(horizontal: 20),
@@ -200,8 +164,8 @@ Future<void> signIn() async {
                 ),
               ),
 
-              SizedBox(height: screenHeight * 0.09), //MESSO VALORE A CASO
-            
+              SizedBox(height: screenHeight * 0.09), 
+
               Container(
                 width: screenWidth * 0.6,          // 90% della larghezza dello schermo
                 height: screenHeight * 0.05,
@@ -223,7 +187,7 @@ Future<void> signIn() async {
                 ),
               ),
 
-              SizedBox(height: screenHeight * 0.003), //MESSO VALORE A CASO
+              SizedBox(height: screenHeight * 0.003), 
 
               TextButton(onPressed: (){
               
