@@ -18,7 +18,7 @@ class _VideoBackgroundState extends State <VideoBackGround>{
     _controller = VideoPlayerController.asset("video/homeScreenVideo.mp4") //con questo preleviamo il video come per le immagine 
       ..initialize().then((_){ // qua invece è relativo al fatto che verrà inizializzata a runtime la variabile
         _controller.setLooping(true); //Così mettiamo il video in loop
-        _controller.play(); //così facciamo partire il video , prima però andava settato il loop
+        // _controller.play(); //così facciamo partire il video , prima però andava settato il loop
         setState(() {}); // il setState indica "Qualcosa è cambiato ridisegna il widget" , il parametro che gli passiamo è una funzione anonima in questo caso 
         // dove normalmente aggiorniamo lo stato dei nostri widget. Ma in questo caso non cambiamo variabili , ma abbiamo bisogno di ridisegnare la UI perchè_controller.value.isInitialized ora è true.
         // Senza questa setState , Flutter non sa che il video pronto e quindi il VideoPlayer non verrebbe mostrato. Quindi serve a notificare a Flutter solo che lo stato è cambiato

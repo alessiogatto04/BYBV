@@ -94,7 +94,11 @@ Future<void> registerUser() async {
       ),
     ),
 
-    body: Column(
+    body: Stack(
+      children: [
+          Image(image: const AssetImage('images/imgSignUp.png'),),
+      
+        Column(
         children: [
           Padding(
             padding: EdgeInsets.only(
@@ -128,8 +132,9 @@ Future<void> registerUser() async {
                 children:[
                   SizedBox(height: screenHeight * 0.03), 
                   Text(
-                      "Registrati",
+                      "Registrazione",
                       style: TextStyle(
+                        fontFamily: 'Poppins-Bold',
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.normal,
@@ -153,7 +158,10 @@ Future<void> registerUser() async {
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               labelText: 'Email',             
-                              labelStyle: TextStyle(color: Colors.white),
+                              labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Poppins',
+                                ),
                               border: InputBorder.none,       // rimuove il bordo interno
                               contentPadding: EdgeInsets.symmetric(horizontal: 20),
                             ),
@@ -194,7 +202,10 @@ Future<void> registerUser() async {
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               labelText: 'Password',             // più semplice di label: Text(...)
-                              labelStyle: TextStyle(color: Colors.white),
+                              labelStyle: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Poppins',
+                                ),
                               border: InputBorder.none,       // rimuove il bordo interno
                               contentPadding: EdgeInsets.symmetric(horizontal: 20),
                             ),
@@ -231,7 +242,9 @@ Future<void> registerUser() async {
                         }, child: Text(
                           "Registrati",
                           style: TextStyle(
-                            color:Colors.black),
+                            color:Colors.black,
+                            fontFamily: 'Poppins-Bold',
+                            ),
                         )
                     ),
                   ),
@@ -240,24 +253,27 @@ Future<void> registerUser() async {
 
                   TextButton(onPressed: (){
                   
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
-                  }, child: RichText(
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  }, 
+                    child: RichText(
                       text: TextSpan(
                         children: [
                           TextSpan(
                             text:"Hai già un account? ",
                             style: TextStyle(
                               color:Colors.white,
+                              fontFamily: 'Poppins'
                             ),
                           ),
                           TextSpan(
                             text:"Accedi",
                             style: TextStyle(
                               color:Colors.white,
-                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Poppins-Bold',
+                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -265,11 +281,13 @@ Future<void> registerUser() async {
                     ),
                   )
                 ],
-              ),
-            )
+                ),
+              )
+            ),
           ),
-        ),
-      ]
+        ]
+      )
+      ],
     )
   );
 }

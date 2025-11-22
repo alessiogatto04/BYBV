@@ -68,6 +68,8 @@ flutter:
     - images/imglogo.png
     - video/homeScreenVideo.mp4
     - images/googleLogo.png
+    - images/imgSignUp.png
+    - images/imgLogIn.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
