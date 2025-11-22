@@ -71,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.black,
      
       body: Stack(
+
         children: <Widget>[
           Image(
             image: const AssetImage('images/imgLogIn.png'),
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: EdgeInsets.only(
                   left: screenWidth * 0.35,
-                  top: screenHeight * 0.015,
+                  top: screenHeight * 0.10,
                   right: screenWidth * 0.35,
                   bottom: screenWidth * 0,
                 ),
@@ -103,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: EdgeInsets.only(
                   left: screenWidth * 0.1,
-                  top: screenHeight * 0.12,
+                  top: screenHeight * 0.09,
                   right: screenWidth * 0.1,
                   bottom: screenHeight * 0.17,
                 ),
@@ -145,8 +146,8 @@ class _LoginPageState extends State<LoginPage> {
                                   controller: _email,
                                   style: TextStyle(color: Colors.white),
                                   decoration: InputDecoration(
-                                    labelText: 'Email',
-                                    labelStyle: TextStyle(
+                                    hintText: 'Email',
+                                    hintStyle: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Poppins',
                                       ),
@@ -186,8 +187,8 @@ class _LoginPageState extends State<LoginPage> {
                                   style: TextStyle(color: Colors.white),
                                   obscureText: true,
                                   decoration: InputDecoration(
-                                    labelText: 'Password',
-                                    labelStyle: TextStyle(
+                                    hintText: 'Password',
+                                    hintStyle: TextStyle(
                                       color: Colors.white,
                                       fontFamily: 'Poppins',
                                       ),

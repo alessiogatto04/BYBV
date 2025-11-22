@@ -108,7 +108,7 @@ Future<void> registerUser() async {
           Padding(
             padding: EdgeInsets.only(
               left: screenWidth * 0.35,
-              top: screenHeight * 0.017,
+              top: screenHeight * 0.10,
               right: screenWidth * 0.35,
               bottom: screenWidth * 0,
             ), 
@@ -120,7 +120,7 @@ Future<void> registerUser() async {
           Padding(
             padding: EdgeInsets.only(
               left:screenWidth *0.1 ,
-              top: screenHeight * 0.12,
+              top: screenHeight * 0.09,
               right: screenWidth *0.1, 
               bottom: screenHeight *0.17),
             child: Container(
@@ -162,7 +162,11 @@ Future<void> registerUser() async {
                             controller: _email,
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              labelText: 'Email',             
+                              hintText: 'Email',
+                              hintStyle: TextStyle(
+                                color:Colors.white,
+                                fontFamily: 'Poppins',
+                              ),             
                               labelStyle: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Poppins',
@@ -205,9 +209,10 @@ Future<void> registerUser() async {
                           child: TextField(
                             controller: _password,
                             style: TextStyle(color: Colors.white),
+                            obscureText: true,                           
                             decoration: InputDecoration(
-                              labelText: 'Password',             // più semplice di label: Text(...)
-                              labelStyle: TextStyle(
+                              hintText: 'Password',             // più semplice di label: Text(...)
+                              hintStyle: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Poppins',
                                 ),
