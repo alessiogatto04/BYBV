@@ -1,4 +1,5 @@
 import 'package:bybv/Pages/home_screen.dart';
+import 'package:bybv/Pages/modifica.dart';
 import 'package:bybv/auth.dart';
 import 'package:flutter/material.dart';
 
@@ -28,13 +29,22 @@ class _HomePageState extends State<HomePage> {
         style: TextStyle(color :Colors.white),
         ),
         actions: [
+           IconButton(
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Modifica()),
+                );
+            }, icon: Icon(Icons.settings)),
+            
           IconButton(onPressed: () async{
             await signOut();
             Navigator.pushReplacement(
               context, 
               MaterialPageRoute(builder: (context) => HomeScreen())
               );
-          }, icon: Icon(Icons.logout))
+          }, icon: Icon(Icons.logout)),
+         
         ],
         iconTheme: const IconThemeData(
         color: Colors.white, // colore della freccia
