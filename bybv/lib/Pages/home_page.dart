@@ -57,20 +57,25 @@ class _HomePageState extends State<HomePage> {
                 snapshot.data!,
                 style: TextStyle(
                   color :Colors.white,
-                  fontSize: 17,
+                  fontSize: 13,
                   ),
               ),
             );
           },
       ),
         actions: [
-           IconButton(
+          IconButton(
             onPressed: (){
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Modifica()),
                 );
-            }, icon: Icon(Icons.settings)),
+            },
+            icon: Icon(Icons.edit)),
+
+          IconButton(
+            onPressed: (){}, //va inserito un navigato che porta alla pagina delle impostazioni delle applicazioni
+            icon: Icon(Icons.settings)),
 
           IconButton(onPressed: () async{
             await signOut();
@@ -82,51 +87,45 @@ class _HomePageState extends State<HomePage> {
          
         ],
       ),
-        // title: --> bisognerà inserire il nome dell'utente. dobbiamo prima fare il firebase e capire come si fa
-        // leading: TextButton(      //mi posiziona il child sulla sinistra
-        //   onPressed: (){
-        //     Navigator.push(        //mi permette di spostarmi in una nuova schermata interna alla directory dell'applicazione
-        //       context,
-        //      MaterialPageRoute(builder: (context) => paginaModifica()),  dobbiamo costruire la pagina paginaModifica
-        //     );
-        //   }, child: Text(
-        //     "Modifica",
-        //     style: TextStyle(
-        //       fontSize: 18,
-        //       color: Colors.lightBlueAccent
-        //       ), 
-        //   )
-        // ),
-      //     actions: [
-      //       IconButton(
-      //         onPressed: (){
-      //           Navigator.push(
-      //             context,
-      //             MaterialPageRoute(builder: (context) => pageSettings()),
-      //           );
-      //         }, icon: Icon(Icons.settings))
-      //     ],
       
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-              child: Row(
-              children: <Widget>[
-                //bisogna inserire CircleAvatar così diventa circolare come le img di profilo
-                  CircleAvatar(
-                    radius: 40, // dimensione dell'immagine
-                    backgroundImage:AssetImage("images/imgprofile.png")
-                  ),
 
-                SizedBox(width: 16),   //distanza tra immagini e testo
-                Text(
-                  "",//nomeUtente da inserire come nel title a riga 11
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Row(
+            children: [
+              
+              InkWell(          //molto semplicemente rende un widget cliccabile (come un button ma per widget general)
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context)=> Modifica()),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                    children: <Widget>[
+                      //bisogna inserire CircleAvatar così diventa circolare come le img di profilo
+                        CircleAvatar(
+                          radius: 40, // dimensione dell'immagine
+                          backgroundImage:AssetImage("images/imgprofile.png")
+                        ),
+
+                      SizedBox(width: 16),   //distanza tra immagini e testo
+                      Text(
+                        "",//nomeUtente da inserire come nel title a riga 11
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                  
+                  ],)
                 ),
-            
-            ],)
+              )
+              
+
+
+            ],
           ),
+          
 
           SizedBox(height: screenHeight* 0.01),
 

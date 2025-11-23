@@ -41,7 +41,9 @@ class _ModificaState extends State<Modifica> {
           ),
         ),
         leading: IconButton(
-          onPressed: () {}, //TORNA ALLA PAGINA DI PRIMA NON SALVANDO
+          onPressed: () {
+            Navigator.pop(context);
+          }, //TORNA ALLA PAGINA DI PRIMA NON SALVANDO
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
         actions: [
