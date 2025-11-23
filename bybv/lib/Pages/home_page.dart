@@ -4,6 +4,7 @@ import 'package:bybv/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class HomePage extends StatefulWidget{
   const HomePage({Key? key}): super(key: key);
@@ -17,6 +18,10 @@ class _HomePageState extends State<HomePage> {
   Future<void> signOut() async{
     await Auth.instance.signOut();
   }
+
+  DateTime? _selectedDay;
+  DateTime _focusedDay = DateTime.now();
+  CalendarFormat _calendarFormat = CalendarFormat.month;
 
   Future<String> getUsername() async{
     final user = FirebaseAuth.instance.currentUser; //prende l'utente loggato su firebase nel momento attuale
@@ -94,7 +99,7 @@ class _HomePageState extends State<HomePage> {
           Row(
             children: [
               
-              InkWell(          //molto semplicemente rende un widget cliccabile (come un button ma per widget general)
+              InkWell(          //molto semplicemente rende un widget cliccabile (come un button normale ma per widget general)
                 onTap: (){
                   Navigator.push(
                     context,
@@ -127,7 +132,7 @@ class _HomePageState extends State<HomePage> {
           ),
           
 
-          SizedBox(height: screenHeight* 0.01),
+          SizedBox(height: screenHeight* 0.04),
 
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -136,7 +141,7 @@ class _HomePageState extends State<HomePage> {
               ElevatedButton(onPressed: (){},
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20) // MESSO VALORE A CASO, CONTROLLATE E AGGIUSTATE CON L'EMULATORE
+                    borderRadius: BorderRadius.circular(20) 
                   ),
                   backgroundColor: const Color.fromARGB(255, 50, 50, 50)
                 ),
@@ -148,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               )),
 
-              SizedBox(width: screenWidth * 0.05), //MESSO VALORE A CASO
+              SizedBox(width: screenWidth * 0.08),
 
               ElevatedButton(onPressed: (){},
                 style: ElevatedButton.styleFrom(
@@ -158,17 +163,42 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor: const Color.fromARGB(255, 50, 50, 50)
                 ),
                 child: Text(
-                "Esercizi",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              )),
-            ],
+                  "Esercizi",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                )),
+              ],
           ),
 
-          //ciao
-          SizedBox(height: screenHeight*0.01),
+          SizedBox(height: screenHeight*0.02),
+
+          TableCalendar(
+            focusedDay: _focusedDay,
+            firstDay: DateTime.utc(2010, 12, 12),
+            lastDay: DateTime.now(),
+
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+
+
+            onDaySelected: (selectedDay,focusedDay){
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay; 
+
+              });
+            },
+
+            calendarFormat: _calendarFormat,
+            onFormatChanged: (format) {
+              setState(() {
+                _calendarFormat = format;
+              });
+            },
+
+          )
+
           // ElevatedButton(onPressed: (){},       HO COMPLETAMENTE SBAGLIATO ANDREBBE INSERITO IL CALENDARIO, DA CAPIRE COME SI FA
           //   style: ElevatedButton.styleFrom(
           //     shape: RoundedRectangleBorder(
