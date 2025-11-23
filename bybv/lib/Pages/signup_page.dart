@@ -70,10 +70,20 @@ Future<void> registerUser() async {
     print("Email: ${_email.text}");
     print("Password: ${_password.text}");
 
+
+    // Creazione utente Firebase Auth tramite singleton
     await Auth.instance.createUserWithEmailAndPassword(
-      email: _email.text,
-      password: _password.text,
+      email: _email.text.trim(),
+      password: _password.text.trim(),
     );
+
+    String uid = Auth.instance.currentUser!.uid;
+
+     // Salvataggio username ed email in Firestore
+    await FirebaseFirestore.instance.collection('users').doc(uid).set({
+      'username': _username.text.trim(),
+      'email': _email.text.trim(),
+    });
 
     // Utente creato
     ScaffoldMessenger.of(context).showSnackBar(
@@ -318,13 +328,15 @@ Future<void> registerUser() async {
                         validateInputs(_email.text.trim(), _password.text.trim());  //trim toglie gli spazi a inizio e fine riga
                         String username = _username.text.trim();
                         if(username.isNotEmpty) {
-                          salvaUsername(username); // salva su Firestore
+                          salvaUsername(username);    // salva su Firestore
+                          registerUser();
                         } else {
                             // mostra errore se vuoto
                             ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Inserisci un username"))
                             );
                         }
+                        
 
                         }, child: Text(
                           "Registrati",
