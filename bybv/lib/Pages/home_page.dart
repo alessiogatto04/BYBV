@@ -1,6 +1,8 @@
 import 'package:bybv/Pages/home_screen.dart';
 import 'package:bybv/Pages/modifica.dart';
 import 'package:bybv/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget{
@@ -15,6 +17,19 @@ class _HomePageState extends State<HomePage> {
   Future<void> signOut() async{
     await Auth.instance.signOut();
   }
+
+  Future<String> getUsername() async{
+    final user = FirebaseAuth.instance.currentUser; //prende l'utente loggato su firebase nel momento attuale
+    if (user == null) return "";   //devo gestire il caso di nessun username (anche se non è possibile non avere username)
+
+    final doc = await FirebaseFirestore.instance    //recupera il documento dell'utente --> va nella collezione eser, prende il documento con id = uid dell'utente e lo legge
+    .collection('users')
+    .doc(user.uid)
+    .get();
+
+    return doc.data()?['username'];   //restituisce l'username
+  }
+  
   @override
   Widget build(BuildContext context){
     double screenWidth = MediaQuery.of(context).size.width;
@@ -28,12 +43,26 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,  //centra il titolo
         title: Image.asset(
           'images/imgLogo.png',
-          width: screenWidth *0.12,
-          height: screenHeight*0.12,
+          width: screenWidth *0.13,
+          height: screenHeight*0.13,
         ),
-        leading: const Text("Qui ci vuole il nome dell'utente",
-        style: TextStyle(color :Colors.white),
-        ),
+        leading: FutureBuilder<String?>(    //futureBuilder crea un widget che aspetta il risultato di un future, in questo caso di username
+          future: getUsername(),            
+          builder: (context, snapshot) {    //viene eseguito ogni volta che cambia lo stato di future
+            if (!snapshot.hasData) {        //questo vuol dire--> se non ci sono ancora risultati allora mostra ...
+              return const Text("...");
+            }
+            return Center(
+              child: Text(
+                snapshot.data!,
+                style: TextStyle(
+                  color :Colors.white,
+                  fontSize: 17,
+                  ),
+              ),
+            );
+          },
+      ),
         actions: [
            IconButton(
             onPressed: (){
@@ -52,9 +81,6 @@ class _HomePageState extends State<HomePage> {
           }, icon: Icon(Icons.logout)),
          
         ],
-        iconTheme: const IconThemeData(
-        color: Colors.white, // colore della freccia
-        ),
       ),
         // title: --> bisognerà inserire il nome dell'utente. dobbiamo prima fare il firebase e capire come si fa
         // leading: TextButton(      //mi posiziona il child sulla sinistra
