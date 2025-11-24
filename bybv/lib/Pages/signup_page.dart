@@ -170,7 +170,7 @@ Future<void> registerUser() async {
                   Text(
                       "Registrati",
                       style: TextStyle(
-                        fontFamily: 'Poppins-Bold',
+                        fontFamily: 'Poppins',
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.normal,
@@ -342,7 +342,8 @@ Future<void> registerUser() async {
                           "Registrati",
                           style: TextStyle(
                             color:Colors.black,
-                            fontFamily: 'Poppins-Bold',
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.bold,
                             ),
                         )
                     ),
@@ -371,7 +372,7 @@ Future<void> registerUser() async {
                             text:"Accedi",
                             style: TextStyle(
                               color:Colors.white,
-                              fontFamily: 'Poppins-Bold',
+                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.bold,
                               // fontWeight: FontWeight.bold,
                             ),

@@ -204,7 +204,7 @@ class _ModificaState extends State<Modifica> {
                         DropdownMenuItem(
                           value: "N",
                           child: Text(
-                            "Non specificato",
+                            "Poco e niente",
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

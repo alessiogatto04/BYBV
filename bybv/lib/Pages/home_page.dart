@@ -76,11 +76,17 @@ class _HomePageState extends State<HomePage> {
                 MaterialPageRoute(builder: (context) => Modifica()),
                 );
             },
-            icon: Icon(Icons.edit)),
+            icon: Icon(Icons.edit),
+            color: Colors.white,
+            
+            
+            ),
 
           IconButton(
             onPressed: (){}, //va inserito un navigato che porta alla pagina delle impostazioni delle applicazioni
-            icon: Icon(Icons.settings)),
+            icon: Icon(Icons.settings),
+            color: Colors.white,
+            ),
 
           IconButton(onPressed: () async{
             await signOut();
@@ -88,7 +94,10 @@ class _HomePageState extends State<HomePage> {
               context, 
               MaterialPageRoute(builder: (context) => HomeScreen())
               );
-          }, icon: Icon(Icons.logout)),
+          },
+          icon: Icon(Icons.logout),
+          color: Colors.white,
+          ),
          
         ],
       ),
@@ -124,8 +133,33 @@ class _HomePageState extends State<HomePage> {
                     
                     ],)
                   ),
+                ),
+
+                FutureBuilder<String>(
+                  future: getUsername(),
+                  builder: (context, snapshot){
+                    // if(!snapshot.hasData){
+                      
+                    // }
+                    return TextButton(
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Modifica())
+                          );
+                      },
+                      child: Text(
+                        snapshot.data!,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          // fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    );
+                  }
                 )
-                
 
 
               ],
@@ -176,11 +210,11 @@ class _HomePageState extends State<HomePage> {
 
             SizedBox(
               width: screenWidth* 0.7,
-              // height: screenHeight* ,
+              height: screenHeight* 0.7,
 
               child: TableCalendar(
                 focusedDay: _focusedDay,
-                firstDay: DateTime.utc(2010, 12, 12),
+                firstDay: DateTime.utc(2010, 1, 1),
                 lastDay: DateTime.now(),
 
                 selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
@@ -200,6 +234,33 @@ class _HomePageState extends State<HomePage> {
                     _calendarFormat = format;
                   });
                 },
+
+                calendarStyle: CalendarStyle(
+                  defaultTextStyle: TextStyle(color: Colors.white),
+                  weekendTextStyle: TextStyle(color: Colors.white),
+                  selectedTextStyle: TextStyle(color: Colors.white),
+                  todayTextStyle: TextStyle(color: Colors.white),
+                  holidayTextStyle: TextStyle(color: Colors.red),
+                  holidayDecoration: BoxDecoration(),   //rimuove il cerchio dai giorni indicati come festivi
+
+                ),
+                holidayPredicate: (date){
+                  return date.weekday == DateTime.sunday;     //queste 3 righe impostano tutte le domeniche rosse nel calendaario per segnarle come giorno festivo
+                },
+
+                headerStyle: HeaderStyle(
+                  titleCentered: true,
+                  formatButtonVisible: false,
+                  titleTextStyle: TextStyle(
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
+                    fontSize: 18,
+                    // fontWeight: FontWeight.bold,
+                  )
+                ),
+
+                shouldFillViewport: false,
+                availableGestures: AvailableGestures.all,
 
               )
             )

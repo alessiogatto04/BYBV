@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                         Text(
                           "Accesso",
                           style: TextStyle(
-                            fontFamily: 'Poppins-Bold',
+                            fontFamily: 'Poppins',
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontStyle: FontStyle.normal,
@@ -144,7 +144,10 @@ class _LoginPageState extends State<LoginPage> {
                               Expanded(
                                 child: TextField(
                                   controller: _email,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    // fontFamily: 'Poppins',
+                                    ),
                                   decoration: InputDecoration(
                                     hintText: 'Email',
                                     hintStyle: TextStyle(
@@ -226,7 +229,8 @@ class _LoginPageState extends State<LoginPage> {
                               "Accedi",
                               style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: 'Poppins-Bold',
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.bold,
                                 ),
                             ),
                           ),
@@ -258,9 +262,10 @@ class _LoginPageState extends State<LoginPage> {
                                   TextSpan(
                                     text: "Registrati\n\n\n",
                                     style: TextStyle(
-                                      fontFamily: 'Poppins-Bold',
+                                      fontFamily: 'Poppins',
                                         color: Colors.white,
-                                        fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                        ),
                                   ),
                                   TextSpan(
                                     text: "------------ o continua con ------------",
