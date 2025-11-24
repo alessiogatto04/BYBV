@@ -23,6 +23,15 @@ class _HomePageState extends State<HomePage> {
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
+  Set<DateTime> _workoutDays = {};
+  bool _loadingWorkouts = true;
+
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   _loadWorkoutDaysFromFirestore();
+  // }
+
   Future<String> getUsername() async{
     final user = FirebaseAuth.instance.currentUser; //prende l'utente loggato su firebase nel momento attuale
     if (user == null) return "";   //devo gestire il caso di nessun username (anche se non è possibile non avere username)
@@ -224,8 +233,32 @@ class _HomePageState extends State<HomePage> {
                   setState(() {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay; 
-
                   });
+
+                  showDialog(
+                    context: context,
+                    builder: (context){
+                      return AlertDialog(
+                        title: Text(
+                          "Vuoi registrare l'allenamento?",
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () =>
+                              Navigator.pop(context),
+                              child: Text("no"),
+                          ),
+                           TextButton(
+                            onPressed: () {
+                              // Qui registri l'allenamento
+                              Navigator.pop(context);
+                            },
+                            child: Text("Sì"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
 
                 calendarFormat: _calendarFormat,
