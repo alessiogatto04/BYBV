@@ -13,7 +13,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.android,
   );
-  runApp(const BYBV());
+  runApp(
+    const BYBV(),
+    );
 }
 
 class BYBV extends StatelessWidget {
