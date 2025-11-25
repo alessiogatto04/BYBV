@@ -19,18 +19,78 @@ class _HomePageState extends State<HomePage> {
     await Auth.instance.signOut();
   }
 
+
+  //appena viene aperta l'home page vengono presi da firebase i giorni in cui mi sono allenato
+  @override 
+  void initState(){
+    super.initState();
+    loadWorkouts();
+  }
+
   DateTime? _selectedDay;
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
-  Set<DateTime> _workoutDays = {};
-  bool _loadingWorkouts = true;
 
-  // @override
-  // void initState(){
-  //   super.initState();
-  //   _loadWorkoutDaysFromFirestore();
-  // }
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Map<DateTime, List> events = {};
+
+
+  DateTime _stripTime(DateTime dt) {
+  return DateTime(dt.year, dt.month, dt.day);
+  }
+
+  //con questo dico che la data ha solo anno, mese e giorno senza ora. infatti anche con l'orario l'utente potrebbe prenotare lo stesso giorno ma con orari diversi
+  String _dateId(DateTime dt){
+    final d = _stripTime(dt);
+    final y = d.year.toString().padLeft(4, '0');  
+    final m = d.month.toString().padLeft(2, '0'); // se inserisco mese 2 inserirà in automatico 02 (arriva a 2 cifre inserendo 0 from left)
+    final day = d.day.toString().padLeft(2, '0');
+
+    return '$y-$m-$day';
+  }
+
+  Future<void> loadWorkouts() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null) return;
+
+    final uid = user.uid;
+
+    final coll = _firestore.collection('users').doc(uid).collection('workouts');
+
+    final snap = await coll.get();
+    final Map<DateTime, List> loaded = {};
+
+    for(final doc in snap.docs){
+      final dateStr = doc.id;
+      final date = DateTime.parse(dateStr);
+      loaded[_stripTime(date)] = ["allenamento"];
+    }
+
+    setState(() {
+      events = loaded;
+    });
+}
+
+
+Future<void> saveWorkout(DateTime day)async{
+  final user = FirebaseAuth.instance.currentUser;
+  if(user == null)return;
+
+  final uid = user.uid;
+
+  final d = _stripTime(day);
+  final id = _dateId(d);
+  final coll = _firestore.collection('users').doc(uid).collection('workouts');     //va a cercare in firestore dentro la collezione con l'uid che sto utilizzando attualmente dentro la subcollection workouts
+  await coll.doc(id).set({
+    'date': id,
+    'createdAt': FieldValue.serverTimestamp(),
+  });
+
+  setState(() {
+    events[d] = ['allenamento'];
+  });
+}
 
   Future<String> getUsername() async{
     final user = FirebaseAuth.instance.currentUser; //prende l'utente loggato su firebase nel momento attuale
@@ -222,6 +282,12 @@ class _HomePageState extends State<HomePage> {
               height: screenHeight* 0.7,
 
               child: TableCalendar(
+
+                eventLoader: (day){
+                  final d = _stripTime(day);
+                  return events[d] ?? [];
+                },
+
                 focusedDay: _focusedDay,
                 firstDay: DateTime.utc(2010, 1, 1),
                 lastDay: DateTime.now(),
@@ -244,14 +310,44 @@ class _HomePageState extends State<HomePage> {
                         ),
                         actions: [
                           TextButton(
-                            onPressed: () =>
-                              Navigator.pop(context),
-                              child: Text("no"),
-                          ),
-                           TextButton(
-                            onPressed: () {
-                              // Qui registri l'allenamento
+                            onPressed: (){
                               Navigator.pop(context);
+                            },
+                              child: Text("No"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              saveWorkout(_selectedDay!);
+                              Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                builder: (context){
+                                  return AlertDialog(
+                                    title: Text(
+                                      "Vuoi anche registrare gli esercizi?",
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: (){
+                                          Navigator.pop(context);
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => HomePage()),
+                                          //   );
+                                          },
+                                        child: Text("No"),
+                                      ),
+
+                                      TextButton( 
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          // Navigator.push(context, MaterialPageRoute(builder: builder))    //va inserito l'invio alla pagina creaAllenamento;
+                                        },   //va inserito l'invio alla pagina creaAllenamento;
+                                        child: Text("Si"),
+                                      ),
+                                    ],
+                                  );
+                                });
                             },
                             child: Text("Sì"),
                           ),
@@ -275,6 +371,18 @@ class _HomePageState extends State<HomePage> {
                   todayTextStyle: TextStyle(color: Colors.white),
                   holidayTextStyle: TextStyle(color: Colors.red),
                   holidayDecoration: BoxDecoration(),   //rimuove il cerchio dai giorni indicati come festivi
+
+
+                  //queste righe servono a colorare i giorni in cui si è registrato l'allenamento
+                  markerDecoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 25, 99, 28),
+                    shape: BoxShape.circle,
+                  ),
+                selectedDecoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 25, 99, 28),
+                  shape: BoxShape.circle,
+                ),
+
 
                 ),
                 holidayPredicate: (date){
