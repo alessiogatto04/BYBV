@@ -70,27 +70,46 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       events = loaded;
     });
-}
+  }
 
 
-Future<void> saveWorkout(DateTime day)async{
-  final user = FirebaseAuth.instance.currentUser;
-  if(user == null)return;
+  Future<void> saveWorkout(DateTime day)async{
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null)return;
 
-  final uid = user.uid;
+    final uid = user.uid;
 
-  final d = _stripTime(day);
-  final id = _dateId(d);
-  final coll = _firestore.collection('users').doc(uid).collection('workouts');     //va a cercare in firestore dentro la collezione con l'uid che sto utilizzando attualmente dentro la subcollection workouts
-  await coll.doc(id).set({
-    'date': id,
-    'createdAt': FieldValue.serverTimestamp(),
-  });
+    final d = _stripTime(day);
+    final id = _dateId(d);
+    final coll = _firestore.collection('users').doc(uid).collection('workouts');     //va a cercare in firestore dentro la collezione con l'uid che sto utilizzando attualmente dentro la subcollection workouts
+    await coll.doc(id).set({
+      'date': id,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
 
-  setState(() {
-    events[d] = ['allenamento'];
-  });
-}
+    setState(() {
+      events[d] = ['allenamento'];
+    });
+  }
+
+  Future<void> removeWorkout(DateTime day) async{
+    final user = FirebaseAuth.instance.currentUser;
+    
+    if(user == null)return;
+
+    final uid = user.uid;
+
+    final d = _stripTime(day);
+    final id = _dateId(d);
+    final coll = _firestore.collection('users').doc(uid).collection('workouts');
+
+    await coll.doc(id).delete();
+
+    setState(() {
+      events.remove(d);
+    });
+
+  }
 
   Future<String> getUsername() async{
     final user = FirebaseAuth.instance.currentUser; //prende l'utente loggato su firebase nel momento attuale
@@ -175,63 +194,76 @@ Future<void> saveWorkout(DateTime day)async{
         child: Column(
           children: [
 
-            Row(
-              children: [       
-                InkWell(          //molto semplicemente rende un widget cliccabile (come un button normale ma per widget general)
-                  onTap: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context)=> Modifica()),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                      children: <Widget>[
-                        //bisogna inserire CircleAvatar così diventa circolare come le img di profilo
-                          CircleAvatar(
-                            radius: 40, // dimensione dell'immagine
-                            backgroundImage:AssetImage("images/imgprofile.png")
-                          ),
-
-                        SizedBox(width: 16),   //distanza tra immagini e testo
-                        Text(
-                          "",//nomeUtente da inserire come nel title a riga 11
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                    
-                    ],)
-                  ),
-                ),
-
-                FutureBuilder<String>(
-                  future: getUsername(),
-                  builder: (context, snapshot){
-                    // if(!snapshot.hasData){
-                      
-                    // }
-                    return TextButton(
-                      onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Modifica())
-                          );
-                      },
-                      child: Text(
-                        snapshot.data!,
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          // fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                    );
-                  }
+            Container(
+              margin:  EdgeInsets.only(right: screenWidth*0.35),
+              width: screenWidth * 0.5,
+              height: screenHeight*0.18,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(0  ),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 2,
                 )
+              ),
+              child: Row(
+                children: [       
+                  InkWell(          //molto semplicemente rende un widget cliccabile (come un button normale ma per widget general)
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context)=> Modifica()),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                        children: <Widget>[
+                          //bisogna inserire CircleAvatar così diventa circolare come le img di profilo
+                            CircleAvatar(
+                              radius: 40, // dimensione dell'immagine
+                              backgroundImage:AssetImage("images/imgprofile.png")
+                            ),
+
+                          SizedBox(width: 16),   //distanza tra immagini e testo
+                          Text(
+                            "",//nomeUtente da inserire come nel title a riga 11
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                      
+                      ],)
+                    ),
+                  ),
+
+                  FutureBuilder<String>(
+                    future: getUsername(),
+                    builder: (context, snapshot){
+                      // if(!snapshot.hasData){
+                        
+                      // }
+                      return TextButton(
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Modifica())
+                            );
+                        },
+                        child: Text(
+                          snapshot.data!,
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            // fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      );
+                    }
+                  )
 
 
-              ],
+                ],
+              ),
             ),
             
 
@@ -301,60 +333,92 @@ Future<void> saveWorkout(DateTime day)async{
                     _focusedDay = focusedDay; 
                   });
 
-                  showDialog(
-                    context: context,
-                    builder: (context){
-                      return AlertDialog(
-                        title: Text(
-                          "Vuoi registrare l'allenamento?",
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: (){
-                              Navigator.pop(context);
-                            },
-                              child: Text("No"),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              saveWorkout(_selectedDay!);
-                              Navigator.pop(context);
-                              showDialog(
-                                context: context,
-                                builder: (context){
-                                  return AlertDialog(
-                                    title: Text(
-                                      "Vuoi anche registrare gli esercizi?",
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: (){
-                                          Navigator.pop(context);
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(builder: (context) => HomePage()),
-                                          //   );
-                                          },
-                                        child: Text("No"),
-                                      ),
+                  final normalized = _stripTime(selectedDay);
+                  final giaPresente = events.containsKey(normalized);
 
-                                      TextButton( 
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          // Navigator.push(context, MaterialPageRoute(builder: builder))    //va inserito l'invio alla pagina creaAllenamento;
-                                        },   //va inserito l'invio alla pagina creaAllenamento;
-                                        child: Text("Si"),
-                                      ),
-                                    ],
-                                  );
-                                });
-                            },
-                            child: Text("Sì"),
+                  if(!giaPresente){
+                      showDialog(
+                      context: context,
+                      builder: (context){
+                        return AlertDialog(
+                          title: Text(
+                            "Vuoi registrare l'allenamento?",
                           ),
-                        ],
-                      );
-                    },
-                  );
+                          actions: [
+                            TextButton(
+                              onPressed: (){
+                                Navigator.pop(context);
+                              },
+                                child: Text("No"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                saveWorkout(_selectedDay!);
+                                Navigator.pop(context);
+                                showDialog(
+                                  context: context,
+                                  builder: (context){
+                                    return AlertDialog(
+                                      title: Text(
+                                        "Vuoi anche registrare gli esercizi?",
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: (){
+                                            Navigator.pop(context);
+                                            },
+                                          child: Text("No"),
+                                        ),
+
+                                        TextButton( 
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            // Navigator.push(context, MaterialPageRoute(builder: builder))    //va inserito l'invio alla pagina creaAllenamento;
+                                          },   //va inserito l'invio alla pagina creaAllenamento;
+                                          child: Text("Si"),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                              },
+                              child: Text("Sì"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                  }else{
+                    showDialog(
+                      context: context,
+                      builder: (context){
+                        return AlertDialog(
+                          title: Text(
+                            "Vuoi rimuovere la seduta di allenamento?",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed:(){Navigator.pop(context);},
+                               child: Text(
+                                "No",
+                               )),
+                               TextButton(
+                                onPressed: (){
+                                  Navigator.pop(context);
+                                  removeWorkout(selectedDay);
+                                },
+                                child: Text(
+                                  "Si",
+                                )),
+                          ],
+                        );
+                      }
+                    );
+                  }
+
+
+
+                  
                 },
 
                 calendarFormat: _calendarFormat,
@@ -366,24 +430,23 @@ Future<void> saveWorkout(DateTime day)async{
 
                 calendarStyle: CalendarStyle(
                   defaultTextStyle: TextStyle(color: Colors.white),
-                  weekendTextStyle: TextStyle(color: Colors.white),
+                  weekendTextStyle: TextStyle(color: Colors.red),
                   selectedTextStyle: TextStyle(color: Colors.white),
                   todayTextStyle: TextStyle(color: Colors.white),
                   holidayTextStyle: TextStyle(color: Colors.red),
                   holidayDecoration: BoxDecoration(),   //rimuove il cerchio dai giorni indicati come festivi
-
+                  outsideDaysVisible: false,
+                  
 
                   //queste righe servono a colorare i giorni in cui si è registrato l'allenamento
                   markerDecoration: BoxDecoration(
                     color: const Color.fromARGB(255, 25, 99, 28),
                     shape: BoxShape.circle,
                   ),
-                selectedDecoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 25, 99, 28),
-                  shape: BoxShape.circle,
-                ),
-
-
+                  selectedDecoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 25, 99, 28),
+                    shape: BoxShape.circle,
+                  ),
                 ),
                 holidayPredicate: (date){
                   return date.weekday == DateTime.sunday;     //queste 3 righe impostano tutte le domeniche rosse nel calendaario per segnarle come giorno festivo
@@ -397,7 +460,21 @@ Future<void> saveWorkout(DateTime day)async{
                     color: Colors.white,
                     fontSize: 18,
                     // fontWeight: FontWeight.bold,
-                  )
+                  ),
+
+                //Devo manualmente cambiare il colore delle frecce che mi permettono di muovermi nel calendar inserendo nuove Icon che le rappresentano
+                  leftChevronIcon: Icon(
+                    Icons.chevron_left,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+
+                  rightChevronIcon: Icon(
+                    Icons.chevron_right,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+
                 ),
 
                 shouldFillViewport: false,
