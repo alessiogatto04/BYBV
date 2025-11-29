@@ -1,3 +1,4 @@
+import 'package:bybv/Pages/esercizi_page.dart';
 import 'package:bybv/Pages/home_screen.dart';
 import 'package:bybv/Pages/modifica.dart';
 import 'package:bybv/auth.dart';
@@ -84,7 +85,7 @@ class _HomePageState extends State<HomePage> {
     final coll = _firestore.collection('users').doc(uid).collection('workouts');     //va a cercare in firestore dentro la collezione con l'uid che sto utilizzando attualmente dentro la subcollection workouts
     await coll.doc(id).set({
       'date': id,
-      'createdAt': FieldValue.serverTimestamp(),
+      'createdAt': FieldValue.serverTimestamp(),  // si può evitate ma va a salvare in firestore a che ora creo l'allenamento --> in un futuro aggiornamento dell'app potremmo utilizzarlo per capire quanto dura l'allenamento 
     });
 
     setState(() {
@@ -155,7 +156,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           },
-      ),
+        ),
         actions: [
           IconButton(
             onPressed: (){
@@ -195,7 +196,10 @@ class _HomePageState extends State<HomePage> {
           children: [
 
             Container(
-              margin:  EdgeInsets.only(right: screenWidth*0.35),
+              margin:  EdgeInsets.only(
+                right: screenWidth*0.35,
+                top: screenHeight*0.015,
+              ),
               width: screenWidth * 0.5,
               height: screenHeight*0.18,
               decoration: BoxDecoration(
@@ -269,52 +273,111 @@ class _HomePageState extends State<HomePage> {
 
             SizedBox(height: screenHeight* 0.04),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ElevatedButton(onPressed: (){},
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20) 
-                    ),
-                    backgroundColor: const Color.fromARGB(255, 50, 50, 50)
-                  ),
-                  child: Text(
-                  "Statistiche",
+            Padding(
+              padding: EdgeInsets.only(left: screenWidth *0.07),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Pannello di controllo",
                   style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
+                    fontSize: 14,
+                    color:  const Color.fromARGB(255, 50, 50, 50),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
                   ),
-                )),
+                ),
+              )
+            ),
 
-                SizedBox(width: screenWidth * 0.08),
+            SizedBox(height: screenHeight* 0.02),
 
-                ElevatedButton(onPressed: (){},
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)
+            Row(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: screenWidth*0.08),
+                Expanded(
+                  child: ElevatedButton(onPressed: (){},
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10) 
+                      ),
+                      backgroundColor: const Color.fromARGB(255, 50, 50, 50)
                     ),
-                    backgroundColor: const Color.fromARGB(255, 50, 50, 50)
-                  ),
-                  child: Text(
-                    "Esercizi",
+                    child: Text(
+                    "Statistiche",
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 17,
                       color: Colors.white,
                     ),
                   )),
-                ],
+                ),
+
+                  SizedBox(width: screenWidth * 0.05),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: (){
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) => EserciziPage()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+                      backgroundColor: const Color.fromARGB(255, 50, 50, 50)
+                    ),
+                    child: Text(
+                      "Esercizi",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
+                    )),
+                ),
+                SizedBox(width: screenWidth*0.08),
+              ],
             ),
 
-            SizedBox(height: screenHeight*0.02),
+            SizedBox(height: screenHeight*0.035),
 
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth*0.25,
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(onPressed: (){
+                  // Navigator.push(
+                  //   context, 
+                  //   MaterialPageRoute(
+                  //     builder: (context) => PageCalendario()),
+                  // );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  backgroundColor: const Color.fromARGB(255, 50, 50, 50)
+                  ),
+                  child: Text(
+                    "Calendario",
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Colors.white,
+                    ),
+                  )
+                ),
+              )
+            ),
+            
             SizedBox(
               width: screenWidth* 0.7,
-              height: screenHeight* 0.7,
+              // height: screenHeight* 0.7,
 
               child: TableCalendar(
-
+                rowHeight: screenHeight* 0.07,
+                
                 eventLoader: (day){
                   final d = _stripTime(day);
                   return events[d] ?? [];
@@ -480,18 +543,31 @@ class _HomePageState extends State<HomePage> {
                 shouldFillViewport: false,
                 availableGestures: AvailableGestures.all,
 
+              ),
+            ),
+
+
+            SizedBox(height: screenHeight*0.04),
+
+            Padding(
+              padding:  EdgeInsets.only(left: screenWidth*0.07),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Allenamenti registrati",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Poppins',
+                    color:  const Color.fromARGB(255, 50, 50, 50),
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
               )
-            )
-            // ElevatedButton(onPressed: (){},       HO COMPLETAMENTE SBAGLIATO ANDREBBE INSERITO IL CALENDARIO, DA CAPIRE COME SI FA
-            //   style: ElevatedButton.styleFrom(
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(20),
-            //     ),
-            //     backgroundColor:  const Color.fromARGB(255, 50, 50, 50)
-            //   ),
-            // child: Text(
-            //   ""
-            // ))          
+            ),
+
+            SizedBox(height: screenHeight*0.03),
+            
+
 
 
           ]        
