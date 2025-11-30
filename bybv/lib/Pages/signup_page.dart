@@ -49,11 +49,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<void> salvaUsername(String username) async {
   try {
-    // Ottieni riferimento alla collezione "utenti"
-    CollectionReference utenti = FirebaseFirestore.instance.collection('utenti');
+    // Ottieni riferimento alla collezione "users"
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
 
     // Aggiungi un documento con campo "username"
-    await utenti.add({
+    await users.add({
       'username': username,
       'timestamp': FieldValue.serverTimestamp(), // opzionale
     });

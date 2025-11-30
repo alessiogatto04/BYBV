@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
           width: screenWidth *0.13,
           height: screenHeight*0.13,
         ),
-        leadingWidth: screenWidth*0.2,
+        leadingWidth: screenWidth*0.3,
         leading:Padding(
           padding: EdgeInsets.only(left: screenWidth*0.04),
           child: FutureBuilder<String?>(    //futureBuilder crea un widget che aspetta il risultato di un future, in questo caso di username
@@ -249,16 +249,11 @@ class _HomePageState extends State<HomePage> {
                               radius: 40, // dimensione dell'immagine
                               backgroundImage:AssetImage("images/imgprofile.png")
                             ),
-
-                          SizedBox(width: 16),   //distanza tra immagini e testo
-                          Text(
-                            "",//nomeUtente da inserire come nel title a riga 11
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                      
                       ],)
                     ),
                   ),
+                  
+                  SizedBox(width: screenWidth*0.035),   //distanza tra immagini e testo
 
                   FutureBuilder<String>(
                     future: getUsername(),
