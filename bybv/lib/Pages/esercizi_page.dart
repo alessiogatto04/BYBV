@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:bybv/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:bybv/Pages/home_page.dart';
+
 
 
 class EserciziPage extends StatelessWidget{
@@ -13,7 +13,7 @@ class EserciziPage extends StatelessWidget{
     final user = FirebaseAuth.instance.currentUser; //prende l'utente loggato su firebase nel momento attuale
     if (user == null) return "";   //devo gestire il caso di nessun username (anche se non è possibile non avere username)
 
-    final doc = await FirebaseFirestore.instance    //recupera il documento dell'utente --> va nella collezione eser, prende il documento con id = uid dell'utente e lo legge
+    final doc = await FirebaseFirestore.instance    //recupera il documento dell'utente --> va nella collezione users, prende il documento con id = uid dell'utente e lo legge
     .collection('users')
     .doc(user.uid)
     .get();
@@ -31,9 +31,73 @@ class EserciziPage extends StatelessWidget{
     {
       'nome': 'Panca piana',
       'muscolo': 'Petto',
-      'img': 'images/panca.png',
+      'img': 'images/petto.png',
       'descrizione': 'Sdraiati sulla panca, solleva il bilanciere e abbassalo lentamente sul petto.'
     },
+    {
+      'nome': 'Croci ai cavi',
+      'muscolo': 'Petto',
+      'img': 'images/petto.png',
+      'descrizione': 'Con il tronco stabile, adduci orizzontalmente le braccia mantenendo una leggera flessione dei gomiti, enfatizzando la contrazione del pettorale.',
+    },
+    {
+      'nome': 'Squat',
+      'muscolo': 'Quadricipiti',
+      'img': 'images/quadricipiti.png',
+      'descrizione': 'In posizione eretta, fletti anche e ginocchia mantenendo la colonna neutra, scendi fino a rompere la parallela e risali estendendo completamente le anche.',
+    },
+    {
+      'nome': 'Leg Pressa',
+      'muscolo': 'Quadricipiti',
+      'img': 'images/quadricipiti.png',
+      'descrizione': 'Spingi la pedana estendendo anche e ginocchia, controlla la fase eccentrica mantenendo le ginocchia in linea con le punte dei piedi.',
+    },
+    {
+      'nome': 'Crunch',
+      'muscolo': 'Addome',
+      'img': 'images/addome.png',
+      'descrizione': 'In posizione supina, stabilizza il bacino e solleva il tronco contraendo il retto addominale fino a ridurre la distanza tra sterno e bacino.',    },
+    {
+      'nome': 'Leg Raises',
+      'muscolo': 'Addome',
+      'img': 'images/addome.png',
+      'descrizione': 'In sospensione o supino, solleva gli arti inferiori estendendo l’anca e mantenendo il core in retroversione per evitare compensi lombari.',
+    },
+    {
+      'nome': 'Curl con bilanciere',
+      'muscolo': 'Bicipiti',
+      'img': 'images/bicipiti.png',
+      'descrizione': 'In stazione eretta, flette i gomiti mantenendo le braccia aderenti al tronco e controlla la fase eccentrica evitando compensi della spalla.',
+      },
+      {
+      'nome': 'Curl su panca inclinata',
+      'muscolo': 'Bicipiti',
+      'img': 'images/bicipiti.png',
+      'descrizione': 'Seduto su panca inclinata, estendi le braccia e flette i gomiti enfatizzando l’allungamento iniziale del bicipite e mantenendo il gomito fisso.',
+      },
+
+      //NON ABBIAMO LA FOTO DEI TRICIPITI DEVO FARLA GENERARE DA CHAT
+      // {
+    //   'nome': 'Pushdown ai cavi',
+    //   'muscolo': 'Tricipiti',
+    //   'img': 'images/tricipiti.png',
+    //   'descrizione': 'Con il gomito stabile lungo il fianco, estendi l’avambraccio verso il basso fino alla completa estensione, controllando la fase eccentrica.',
+    //   },
+    //   {
+    //   'nome': 'French press',
+    //   'muscolo': 'Tricipiti',
+    //   'img': 'images/tricipiti.png',
+    //   'descrizione': 'Sdraiato su panca o seduto, flette e poi estendi i gomiti mantenendo l’omero perpendicolare al suolo per enfatizzare la tensione sul tricipite.',
+    // },
+
+    {
+      'nome': 'Se mi clicchi sono interattivo',
+      'muscolo': 'dentro è contenuto la spiegazione dell\'esercizio',
+      'img': 'images/imgprofile.png',
+      'descrizione': 'benvenuti in BYBV',
+    }
+
+
   ];
 
 
@@ -76,7 +140,7 @@ class EserciziPage extends StatelessWidget{
               ),
 
             IconButton(
-              onPressed: (){}, //va inserito un navigato che porta alla pagina delle impostazioni delle applicazioni
+              onPressed: (){}, //va inserito un navigator che porta alla pagina delle impostazioni delle applicazioni
               icon: Icon(Icons.settings),
               color: Colors.white,
               ),
@@ -86,7 +150,7 @@ class EserciziPage extends StatelessWidget{
               Navigator.pushReplacement(
                 context, 
                 MaterialPageRoute(builder: (context) => HomeScreen())
-                );
+              );
             },
             icon: Icon(Icons.logout),
             color: Colors.white,
@@ -113,6 +177,47 @@ class EserciziPage extends StatelessWidget{
                     ],
                   ));
               },
+
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: screenWidth*0.025, vertical: screenHeight*0.005),
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                  borderRadius: BorderRadius.circular(12),
+                ), 
+                child: Row(
+                  children: [
+                    Image.asset(
+                      esercizio['img']!,
+                      width: screenWidth*0.10,
+                      height: screenHeight*0.10,
+                      fit: BoxFit.cover,
+                    ),
+                    SizedBox(width: screenWidth*0.037),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          esercizio['nome']!,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: screenHeight*0.01),
+                        Text(
+                          esercizio['muscolo']!,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]
+                )
+              )
             );
           },
           

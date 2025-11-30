@@ -123,7 +123,8 @@ class _HomePageState extends State<HomePage> {
 
     return doc.data()?['username'];   //restituisce l'username
   }
-  
+
+
   @override
   Widget build(BuildContext context){
     double screenWidth = MediaQuery.of(context).size.width;
@@ -140,7 +141,11 @@ class _HomePageState extends State<HomePage> {
           width: screenWidth *0.13,
           height: screenHeight*0.13,
         ),
-        leading: FutureBuilder<String?>(    //futureBuilder crea un widget che aspetta il risultato di un future, in questo caso di username
+        leadingWidth: screenWidth*0.2,
+        leading:Padding(
+          padding: EdgeInsets.only(left: screenWidth*0.04),
+          child: FutureBuilder<String?>(    //futureBuilder crea un widget che aspetta il risultato di un future, in questo caso di username
+          
           future: getUsername(),            
           builder: (context, snapshot) {    //viene eseguito ogni volta che cambia lo stato di future
             if (!snapshot.hasData) {        //questo vuol dire--> se non ci sono ancora risultati allora mostra ...
@@ -156,6 +161,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           },
+        ),
         ),
         actions: [
           IconButton(
@@ -190,6 +196,21 @@ class _HomePageState extends State<HomePage> {
          
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
+        currentIndex: 1,
+        onTap: (index){
+          if(index == 0){
+            // Navigator.push(context, MaterialPageRoute(builder: (context) => creaAllenamento()));
+          }
+        },
+        items: [
+        BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Allenamento'),
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home-page')
+      ]),
+      
 
       body: SingleChildScrollView(
         child: Column(
