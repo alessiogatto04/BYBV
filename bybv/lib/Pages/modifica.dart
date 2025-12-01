@@ -15,6 +15,8 @@ class Modifica extends StatefulWidget {
 class _ModificaState extends State<Modifica> {
   String? selectedSex;
 
+  DateTime date = DateTime(DateTime.now().day, DateTime.now().month, DateTime.now().year);
+
   final TextEditingController dayController = TextEditingController();
   final TextEditingController monthController = TextEditingController();
   final TextEditingController yearController = TextEditingController();
@@ -53,39 +55,6 @@ class _ModificaState extends State<Modifica> {
       }, SetOptions(merge: true)); // merge --> true. Aggiorna se il valore è gia presente
   }
 
-  // Future<void> loadNome() async{
-  //   final user = FirebaseAuth.instance.currentUser;
-  //   if (user == null) return;
-
-  //   final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
-  //   final snapshot = await docRef.get();
-
-  //   if(snapshot.exists){
-  //     final data = snapshot.data();
-  //     if(data != null && data['name'] != null){
-  //       setState(() {
-  //         nameController.text = data['name'];
-  //       });
-  //     }
-  //   }
-  // }
-
-  // Future<void> loadUsername() async{
-  //   final user = FirebaseAuth.instance.currentUser;
-  //   if(user == null) return;
-
-  //   final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
-  //   final snapshot = await docRef.get();
-
-  //   if(snapshot.exists){
-  //     final data = snapshot.data();
-  //     if(data != null && data['username'] != null){
-  //       setState(() {
-  //         usernameController.text = data['username'];
-  //       });
-  //     }
-  //   }
-  // }
 
   Future<void> saveUsername() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -108,6 +77,28 @@ class _ModificaState extends State<Modifica> {
     }, SetOptions(merge: true));
   }
 
+  Future<void> saveSex() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null) return;
+
+    final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    await docRef.set({
+      'sesso': selectedSex,
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> saveDateOfBirth() async{
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null) return;
+
+    final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    await docRef.set({
+      'Data di Nascita': dayController.text + " " + monthController.text + " " + yearController.text,
+      'Giorno': dayController.text,
+      'Mese': monthController.text,
+      'Anno': yearController.text,
+    }, SetOptions(merge: true));
+  }
 
   Future<void> caricaTuttiIDati() async{
     final user = FirebaseAuth.instance.currentUser;
@@ -130,6 +121,16 @@ class _ModificaState extends State<Modifica> {
             height = data['height'];
           }else{
             height = 170;
+          }
+          if(data['sesso'] != null){
+            selectedSex = data['sesso'];
+          }else{
+            selectedSex ="";
+          }
+          if(data['Data di Nascita'] != null){
+            dayController.text = data['Giorno'];
+            monthController.text = data['Mese'];
+            yearController.text = data['Anno'];
           }
         }
       });
@@ -167,6 +168,8 @@ class _ModificaState extends State<Modifica> {
                   await saveNome();
                   await saveUsername();
                   await saveHeight();
+                  await saveSex();
+                  await saveDateOfBirth();
                   ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Dati salvati!')),
                   );
@@ -202,7 +205,7 @@ class _ModificaState extends State<Modifica> {
             SizedBox(height: screenHeight * 0.015),
 
             const Text(
-              "Dati pubblici",
+              "Dati personali",
               style: TextStyle(color: Colors.grey, fontSize: 14),
             ),
 
@@ -282,14 +285,7 @@ class _ModificaState extends State<Modifica> {
               ],
             ),
 
-            SizedBox(height: screenHeight * 0.03),
-
-            const Text(
-              "Dati Privati",
-              style: TextStyle(color: Colors.grey, fontSize: 16),
-            ),
-
-            SizedBox(height: screenHeight * 0.02),
+            // SizedBox(height: screenHeight * 0.03),
 
             Row(
               children: [
@@ -413,25 +409,28 @@ class _ModificaState extends State<Modifica> {
                 ),
                 ),
                 SizedBox(width: screenWidth * 0.20,
-                child: TextField(
-                  controller: yearController,
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(4),
-                  ],
-                  decoration: const InputDecoration(
-                    hintText: "Anno",
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    isDense: true,
-                    counterText: "",
-                  ),
-                ),
+
+                // child: datepicker
+
+                // child: TextField(
+                //   controller: yearController,
+                //   keyboardType: TextInputType.number,
+                //   textAlign: TextAlign.center,
+                //   style: const TextStyle(color: Colors.white),
+                //   inputFormatters: [
+                //     FilteringTextInputFormatter.digitsOnly,
+                //     LengthLimitingTextInputFormatter(4),
+                //   ],
+                //   decoration: const InputDecoration(
+                //     hintText: "Anno",
+                //     hintStyle: TextStyle(color: Colors.grey),
+                //     border: OutlineInputBorder(
+                //       borderSide: BorderSide(color: Colors.grey),
+                //     ),
+                //     isDense: true,
+                //     counterText: "",
+                //   ),
+                // ),
                 ),
                 const Padding(padding: EdgeInsets.symmetric(horizontal: 4.0),
                 child: Text("/",
