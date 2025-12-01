@@ -57,7 +57,7 @@ class Settings extends StatelessWidget {
               leading: Icon(Icons.dark_mode, color: Colors.white),
               title: Text("Tema", style: TextStyle(color: Colors.white)),
               trailing: Icon(Icons.chevron_right, color: Colors.grey),
-              // onTap: onTap, //SECONDO ME METTIAMO SEMPLICEMENTE CHE DI DEFAULT È IN MODALITÀ SCURA E SUL CLICK LO CAMBIA DIRETTAMENTE, SCRIVEREI TIPO "CAMBIA TEMA"
+              // onTap: onTap, //SE USIAMO CON IL PULSANTE SWITCH CI SCRIVIAMO "MODALITÀ CHIARA" CHE SE ATTIATA METTE IL TEMA DELL'APP BIANCA, PERCHÈ È GIÀ SCURA DI DEFAULT
             ),
           ),
           Container(
@@ -81,14 +81,15 @@ class Settings extends StatelessWidget {
             color: Colors.black,
             child: ListTile(
               leading: Icon(Icons.question_mark_rounded, color: Colors.white),
-              title: Text("Chi siamo?", style: TextStyle(color: Colors.white)),
+              title: Text("Chi siamo?", style: TextStyle(color: Colors.black)),
+            
               trailing: Icon(Icons.chevron_right, color: Colors.grey),
-              // onTap: () {
+              //onTap: () {
               //   Navigator.push(
               //     context,
               //     MaterialPageRoute(builder: (context) => ChiSiamo()),
               //   );
-              // }, //STESSA COSA DI SOPRA, AL MASSIMO NELLA PAGINA "CHI SIAMO" CI METTIAMO LA FOTO DI TONY NUDO CHE HA SCATTATO VITO DOPO IL BAGNO NELLA SORGENTE
+              // }, //STESSA COSA DI SOPRA, AL MASSIMO NELLA PAGINA "CHI SIAMO" CI METTIAMO GIUSTO LA DESCRIZIONE DEI SOGGETTI 
             ),
           ),
           const SizedBox(height: 20),
@@ -97,3 +98,4 @@ class Settings extends StatelessWidget {
     );
   }
 }
+//prova prova
