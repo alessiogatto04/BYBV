@@ -1,5 +1,6 @@
 import 'package:bybv/Pages/esercizi_page.dart';
 import 'package:bybv/Pages/home_screen.dart';
+import 'package:bybv/Pages/impostazioni.dart';
 import 'package:bybv/Pages/modifica.dart';
 import 'package:bybv/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -178,7 +179,12 @@ class _HomePageState extends State<HomePage> {
             ),
 
           IconButton(
-            onPressed: (){}, //va inserito un navigato che porta alla pagina delle impostazioni delle applicazioni
+            onPressed: (){
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => Settings_Page()));
+
+            }, //va inserito un navigato che porta alla pagina delle impostazioni delle applicazioni
             icon: Icon(Icons.settings),
             color: Colors.white,
             ),

@@ -1,4 +1,5 @@
 import 'package:bybv/Pages/home_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -15,24 +16,10 @@ class Modifica extends StatefulWidget {
 class _ModificaState extends State<Modifica> {
   String? selectedSex;
 
-  DateTime date = DateTime(DateTime.now().day, DateTime.now().month, DateTime.now().year);
-
-  final TextEditingController dayController = TextEditingController();
-  final TextEditingController monthController = TextEditingController();
-  final TextEditingController yearController = TextEditingController();
-
   final TextEditingController nameController = TextEditingController();
   final TextEditingController usernameController =TextEditingController();
+  DateTime? dataDiNascita;
 
-
-  @override
-  void dispose() {
-    dayController.dispose();
-    monthController.dispose();
-    yearController.dispose();
-    nameController.dispose();
-    super.dispose();
-  }
 
   int height = 170;
 
@@ -87,16 +74,46 @@ class _ModificaState extends State<Modifica> {
     }, SetOptions(merge: true));
   }
 
+  void _showDatePicker() {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (_) => Container(
+        height: 250,
+        color: Colors.black,
+        child: SafeArea(
+          top: false,
+          child: CupertinoTheme(
+            data: const CupertinoThemeData(
+              brightness: Brightness.dark,
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.date,
+              initialDateTime: dataDiNascita ?? DateTime(1900, 1,1),
+              maximumDate: DateTime.now(),
+              onDateTimeChanged: (newDate) {
+                setState(() {
+                  dataDiNascita = newDate;
+                });
+              },
+            ),
+          )
+        ),
+      ),
+    );
+  }
   Future<void> saveDateOfBirth() async{
     final user = FirebaseAuth.instance.currentUser;
     if(user == null) return;
 
     final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
     await docRef.set({
-      'Data di Nascita': dayController.text + " " + monthController.text + " " + yearController.text,
-      'Giorno': dayController.text,
-      'Mese': monthController.text,
-      'Anno': yearController.text,
+      'Data Di Nascita': dataDiNascita,
     }, SetOptions(merge: true));
   }
 
@@ -127,10 +144,8 @@ class _ModificaState extends State<Modifica> {
           }else{
             selectedSex ="";
           }
-          if(data['Data di Nascita'] != null){
-            dayController.text = data['Giorno'];
-            monthController.text = data['Mese'];
-            yearController.text = data['Anno'];
+          if(data['Data Di Nascita'] != null){
+            dataDiNascita = (data['Data Di Nascita'] as Timestamp).toDate();
           }
         }
       });
@@ -305,6 +320,7 @@ class _ModificaState extends State<Modifica> {
                       icon: const Icon(
                         Icons.arrow_drop_down,
                         color: Colors.white,
+                        size: 28,
                       ),
                       hint: const Text(
                         "Seleziona",
@@ -351,94 +367,39 @@ class _ModificaState extends State<Modifica> {
                 SizedBox(
                   width: screenWidth * 0.25,
                   child: const Text(
-                    "Data di nascita",
+                    "Nascita",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
 
-                SizedBox(width: screenWidth * 0.14,
-                child: TextField(
-                  controller: dayController,
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(2),
-                  ],
-                  decoration: const InputDecoration(
-                    hintText: "Giorno",
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: _showDatePicker,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            dataDiNascita == null
+                                ? "Seleziona data di nascita"
+                                : "${dataDiNascita!.day}/${dataDiNascita!.month}/${dataDiNascita!.year}",
+                            style: const TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                          const Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ]
+                      )
                     ),
-                    isDense: true,
-                    counterText: "",
                   ),
-                ),
-                ),
-                const Padding(padding: EdgeInsets.symmetric(horizontal: 4.0),
-                child: Text("/",
-                style: TextStyle(color: Colors.white),
-                ),
-                ),
-                SizedBox(width: screenWidth * 0.14,
-                child: TextField(
-                  controller: monthController,
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(2),
-                  ],
-                  decoration: const InputDecoration(
-                    hintText: "Mese",
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    isDense: true,
-                    counterText: "",
-                  ),
-                ),
-                ),
-                const Padding(padding: EdgeInsets.symmetric(horizontal: 4.0),
-                child: Text("/",
-                style: TextStyle(color: Colors.white),
-                ),
-                ),
-                SizedBox(width: screenWidth * 0.20,
-
-                // child: datepicker
-
-                // child: TextField(
-                //   controller: yearController,
-                //   keyboardType: TextInputType.number,
-                //   textAlign: TextAlign.center,
-                //   style: const TextStyle(color: Colors.white),
-                //   inputFormatters: [
-                //     FilteringTextInputFormatter.digitsOnly,
-                //     LengthLimitingTextInputFormatter(4),
-                //   ],
-                //   decoration: const InputDecoration(
-                //     hintText: "Anno",
-                //     hintStyle: TextStyle(color: Colors.grey),
-                //     border: OutlineInputBorder(
-                //       borderSide: BorderSide(color: Colors.grey),
-                //     ),
-                //     isDense: true,
-                //     counterText: "",
-                //   ),
-                // ),
-                ),
-                const Padding(padding: EdgeInsets.symmetric(horizontal: 4.0),
-                child: Text("/",
-                style: TextStyle(color: Colors.white),
-                ),
                 )
               ],
             ),
+
+            
           ],
         ),
       ),

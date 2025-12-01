@@ -1,18 +1,17 @@
-import 'package:bybv/Pages/home_page.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
 import 'package:bybv/Pages/modifica.dart';
-import 'package:bybv/Pages/chisiamo.dart';
-import 'package:bybv/Pages/guidaintroduttiva.dart';
-class Settings extends StatelessWidget {
-  const Settings({super.key});
+import 'package:flutter/material.dart';
+
+
+
+class Settings_Page extends StatelessWidget {
+  const Settings_Page({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
@@ -27,20 +26,17 @@ class Settings extends StatelessWidget {
         children: [
           const SizedBox(height: 16),
 
-          Container(
-            color: Colors.grey,
-            child: ListTile(
-              leading: Icon(Icons.person, color: Colors.white),
-              title: Text("Profilo", style: TextStyle(color: Colors.white)),
-              trailing: Icon(Icons.chevron_right, color: Colors.grey),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Modifica()),
-                );
-              },
-            ),
-          ),
+        ListTile(
+            leading: Icon(Icons.person, color: Colors.white),
+            title: Text("Profilo", style: TextStyle(color: Colors.white)),
+            trailing: Icon(Icons.chevron_right, color: Colors.grey),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Modifica()),
+              );
+            },
+        ),
 
           Container(
             color: Colors.black,
