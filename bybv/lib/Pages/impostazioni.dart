@@ -81,8 +81,7 @@ class Settings extends StatelessWidget {
             color: Colors.black,
             child: ListTile(
               leading: Icon(Icons.question_mark_rounded, color: Colors.white),
-              title: Text("Chi siamo?", style: TextStyle(color: Colors.black)),
-            
+              title: Text("Chi siamo?", style: TextStyle(color: Colors.white)),
               trailing: Icon(Icons.chevron_right, color: Colors.grey),
               //onTap: () {
               //   Navigator.push(
