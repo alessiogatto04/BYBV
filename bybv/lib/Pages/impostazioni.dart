@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:bybv/Pages/modifica.dart';
-
+import 'package:bybv/Pages/chisiamo.dart';
+import 'package:bybv/Pages/guidaintroduttiva.dart';
 class Settings extends StatelessWidget {
   const Settings({super.key});
 
@@ -68,7 +69,12 @@ class Settings extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
               trailing: Icon(Icons.chevron_right, color: Colors.grey),
-              // onTap: onTap, //ALTRA PAGINA CHIAMATA "GUIDA INTRODUTTIVA" DOVE CI SCRIVIAMO LO SCOPO DELL'APP, COME REGISTRARE ALLENAMENTI MA NON TROPPO CHE SE POI FACCIAMO FOTO E ALTRO PERDIAMO TANTO TANTO TEMPO
+              //  onTap: () {
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => GuidaIntroduttiva()),
+              //   );
+              // }, //ALTRA PAGINA CHIAMATA "GUIDA INTRODUTTIVA" DOVE CI SCRIVIAMO LO SCOPO DELL'APP, COME REGISTRARE ALLENAMENTI MA NON TROPPO CHE SE POI FACCIAMO FOTO E ALTRO PERDIAMO TANTO TANTO TEMPO
             ),
           ),
           Container(
@@ -77,7 +83,12 @@ class Settings extends StatelessWidget {
               leading: Icon(Icons.question_mark_rounded, color: Colors.white),
               title: Text("Chi siamo?", style: TextStyle(color: Colors.white)),
               trailing: Icon(Icons.chevron_right, color: Colors.grey),
-              //onTap: onTap, //STESSA COSA DI SOPRA, AL MASSIMO NELLA PAGINA "CHI SIAMO" CI METTIAMO LA FOTO DI TONY NUDO CHE HA SCATTATO VITO DOPO IL BAGNO NELLA SORGENTE
+              // onTap: () {
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => ChiSiamo()),
+              //   );
+              // }, //STESSA COSA DI SOPRA, AL MASSIMO NELLA PAGINA "CHI SIAMO" CI METTIAMO LA FOTO DI TONY NUDO CHE HA SCATTATO VITO DOPO IL BAGNO NELLA SORGENTE
             ),
           ),
           const SizedBox(height: 20),
