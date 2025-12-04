@@ -1,3 +1,4 @@
+import 'package:bybv/Pages/allenamento_page.dart';
 import 'package:bybv/Pages/esercizi_page.dart';
 import 'package:bybv/Pages/home_screen.dart';
 import 'package:bybv/Pages/impostazioni.dart';
@@ -209,7 +210,7 @@ class _HomePageState extends State<HomePage> {
         currentIndex: 1,
         onTap: (index){
           if(index == 0){
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => creaAllenamento()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AllenamentoPage()));
           }
         },
         items: [
@@ -363,35 +364,35 @@ class _HomePageState extends State<HomePage> {
 
             SizedBox(height: screenHeight*0.035),
 
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: screenWidth*0.25,
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(onPressed: (){
-                  // Navigator.push(
-                  //   context, 
-                  //   MaterialPageRoute(
-                  //     builder: (context) => PageCalendario()),
-                  // );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  backgroundColor: const Color.fromARGB(255, 50, 50, 50)
-                  ),
-                  child: Text(
-                    "Calendario",
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.white,
-                    ),
-                  )
-                ),
-              )
-            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(
+            //     horizontal: screenWidth*0.25,
+            //   ),
+            //   child: SizedBox(
+            //     width: double.infinity,
+            //     child: ElevatedButton(onPressed: (){
+            //       // Navigator.push(
+            //       //   context, 
+            //       //   MaterialPageRoute(
+            //       //     builder: (context) => PageCalendario()),
+            //       // );
+            //       },
+            //       style: ElevatedButton.styleFrom(
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(10)
+            //         ),
+            //       backgroundColor: const Color.fromARGB(255, 50, 50, 50)
+            //       ),
+            //       child: Text(
+            //         "Calendario",
+            //         style: TextStyle(
+            //           fontSize: 17,
+            //           color: Colors.white,
+            //         ),
+            //       )
+            //     ),
+            //   )
+            // ),
             
             SizedBox(
               width: screenWidth* 0.7,
