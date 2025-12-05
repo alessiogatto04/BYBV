@@ -105,16 +105,26 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
     double screenHeight = MediaQuery.of(context).size.height;
 
   return Scaffold(
-    backgroundColor: Colors.black,
+    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+<<<<<<< HEAD
         backgroundColor: Colors.black,
         title: const Text(
           "Seleziona esercizi",
           style: TextStyle(color: Colors.white),
           ),
+=======
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).primaryColor,
+        title: Text(
+          "Seleziona esercizi",
+          style: TextStyle(
+            color: Theme.of(context).textTheme.titleLarge?.color ?? Colors.white,
+          ),
+        ),
+>>>>>>> cedd46e434f9836a62286dc58002fb0d23a0158a
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -188,17 +198,31 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
 
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: isSelected ? Colors.green:Colors.grey,
+                    color: isSelected 
+                      ? Theme.of(context).primaryColor.withOpacity(0.7)
+                      : Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isSelected 
+                        ? Theme.of(context).primaryColor
+                        : Theme.of(context).dividerColor.withOpacity(0.5),
+                      width: isSelected ? 2 : 1,
+                    ),
                   ),
 
                   child: Row(
                     children: [
-                      Image.asset(
-                        esercizio['img']!,
-                        width:  screenWidth *0.10,
-                        height: screenHeight*0.10,
-                        fit: BoxFit.cover,
+                      Container(
+                        width: screenWidth * 0.10,
+                        height: screenHeight * 0.10,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Image.asset(
+                          esercizio['img']!,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                       SizedBox(width: screenWidth *0.04),
                       Column(
@@ -207,7 +231,7 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
                             Text(
                               esercizio['nome']!,
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold
                               ),
@@ -216,12 +240,19 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
                             Text(
                               esercizio['muscolo']!,
                               style: TextStyle(
-                                color: Colors.white70,
+                                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7) ?? Colors.white70,
                                 fontSize: 13,
                               ),
                             ),
                           ],
                       ),
+                      Spacer(),
+                      if(isSelected)
+                        Icon(
+                          Icons.check_circle,
+                          color: Theme.of(context).primaryColor,
+                          size: 24,
+                        ),
                     ],
                   )
 
