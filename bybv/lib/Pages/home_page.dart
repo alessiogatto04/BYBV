@@ -58,17 +58,20 @@ class _HomePageState extends State<HomePage> {
     final user = FirebaseAuth.instance.currentUser;
     if(user == null) return;
 
-    final uid = user.uid;
-
-    final coll = _firestore.collection('users').doc(uid).collection('workouts');
+    final coll = _firestore.collection('users').doc(user.uid).collection('allenamenti');
 
     final snap = await coll.get();
     final Map<DateTime, List> loaded = {};
 
     for(final doc in snap.docs){
-      final dateStr = doc.id;
-      final date = DateTime.parse(dateStr);
-      loaded[_stripTime(date)] = ["allenamento"];
+      final data = doc.data();
+
+      if(data['giorno'] == null)continue;
+
+        final Timestamp ts = data['giorno'];
+        final DateTime date = ts.toDate();
+        loaded[_stripTime(date)] = ["giorno"];
+
     }
 
     setState(() {
@@ -77,24 +80,6 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  Future<void> saveWorkout(DateTime day)async{
-    final user = FirebaseAuth.instance.currentUser;
-    if(user == null)return;
-
-    final uid = user.uid;
-
-    final d = _stripTime(day);
-    final id = _dateId(d);
-    final coll = _firestore.collection('users').doc(uid).collection('workouts');     //va a cercare in firestore dentro la collezione con l'uid che sto utilizzando attualmente dentro la subcollection workouts
-    await coll.doc(id).set({
-      'date': id,
-      'createdAt': FieldValue.serverTimestamp(),  // si può evitate ma va a salvare in firestore a che ora creo l'allenamento --> in un futuro aggiornamento dell'app potremmo utilizzarlo per capire quanto dura l'allenamento 
-    });
-
-    setState(() {
-      events[d] = ['allenamento'];
-    });
-  }
 
   Future<void> removeWorkout(DateTime day) async{
     final user = FirebaseAuth.instance.currentUser;
@@ -105,7 +90,7 @@ class _HomePageState extends State<HomePage> {
 
     final d = _stripTime(day);
     final id = _dateId(d);
-    final coll = _firestore.collection('users').doc(uid).collection('workouts');
+    final coll = _firestore.collection('users').doc(uid).collection('allenamenti');
 
     await coll.doc(id).delete();
 
