@@ -3,6 +3,7 @@ import 'package:bybv/Pages/esercizi_page.dart';
 import 'package:bybv/Pages/home_screen.dart';
 import 'package:bybv/Pages/impostazioni.dart';
 import 'package:bybv/Pages/modifica.dart';
+import 'package:bybv/Pages/seleziona_esercizi_page.dart';
 import 'package:bybv/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -425,33 +426,10 @@ class _HomePageState extends State<HomePage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                saveWorkout(_selectedDay!);
-                                Navigator.pop(context);
-                                showDialog(
-                                  context: context,
-                                  builder: (context){
-                                    return AlertDialog(
-                                      title: Text(
-                                        "Vuoi anche registrare gli esercizi?",
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: (){
-                                            Navigator.pop(context);
-                                            },
-                                          child: Text("No"),
-                                        ),
-
-                                        TextButton( 
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            // Navigator.push(context, MaterialPageRoute(builder: builder))    //va inserito l'invio alla pagina creaAllenamento;
-                                          },   //va inserito l'invio alla pagina creaAllenamento;
-                                          child: Text("Si"),
-                                        ),
-                                      ],
-                                    );
-                                  });
+                                Navigator.push(
+                                  context, 
+                                  MaterialPageRoute(builder: (context) => SelezionaEserciziPage(selectedDay)),
+                                );
                               },
                               child: Text("Sì"),
                             ),

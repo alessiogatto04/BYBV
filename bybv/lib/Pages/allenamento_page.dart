@@ -80,7 +80,7 @@ class _AllenamentoPage extends State<AllenamentoPage>{
                 onPressed: () async{
                   final selezionati = await Navigator.push(
                     context, 
-                    MaterialPageRoute(builder: (context) => SelezionaEserciziPage()));
+                    MaterialPageRoute(builder: (context) => SelezionaEserciziPage(null)));
 
                   if(selezionati != null){
                     print(selezionati);

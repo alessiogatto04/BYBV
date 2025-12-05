@@ -7,6 +7,10 @@ import 'package:flutter/cupertino.dart';
 
 
 class SelezionaEserciziPage extends StatefulWidget{
+  final DateTime? selectedDay;
+
+  SelezionaEserciziPage(this.selectedDay, {super.key});
+
   @override
   _SelezionaEserciziPageState createState() => _SelezionaEserciziPageState();
 }
@@ -26,19 +30,25 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
   List<Map<String,String>> selezionati = [];
   DateTime? giornoAllenamento;
 
+  @override
+  void initState(){
+    super.initState();
+    giornoAllenamento = widget.selectedDay;
+  }
 
-    String _dateId(DateTime dt){
-      final d = _stripTime(dt);
-      final y = d.year.toString().padLeft(4, '0');  
-      final m = d.month.toString().padLeft(2, '0'); // se inserisco mese 2 inserirà in automatico 02 (arriva a 2 cifre inserendo 0 from left)
-      final day = d.day.toString().padLeft(2, '0');
 
-      return '$y-$m-$day';
-    }
+  String _dateId(DateTime dt){
+    final d = _stripTime(dt);
+    final y = d.year.toString().padLeft(4, '0');  
+    final m = d.month.toString().padLeft(2, '0'); // se inserisco mese 2 inserirà in automatico 02 (arriva a 2 cifre inserendo 0 from left)
+    final day = d.day.toString().padLeft(2, '0');
 
-    DateTime _stripTime(DateTime dt) {
-      return DateTime(dt.year, dt.month, dt.day);
-    }
+    return '$y-$m-$day';
+  }
+
+  DateTime _stripTime(DateTime dt) {
+    return DateTime(dt.year, dt.month, dt.day);
+  }
 
   Future<void> salvaAllenamento() async{
     final user = FirebaseAuth.instance.currentUser;
@@ -127,7 +137,7 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
         Row(
               children: [
                 Padding(
-                  padding: EdgeInsetsGeometry.only(left: screenWidth*0.04),
+                  padding: EdgeInsets.only(left: screenWidth*0.04),
                     child: SizedBox(
                       width: screenWidth * 0.25,
                       child: const Text(

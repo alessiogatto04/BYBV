@@ -233,10 +233,10 @@ class Settings_Page extends StatelessWidget {
               ),
               trailing: Icon(Icons.chevron_right, color: Theme.of(context).iconTheme.color?.withOpacity(0.7) ?? Colors.grey),
               onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ricerca_palestra_page()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (_) => const ricerca_palestra_page()),
+                // );
               }, 
             ),
           ),
