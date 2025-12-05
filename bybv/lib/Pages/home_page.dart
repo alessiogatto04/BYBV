@@ -169,19 +169,6 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             onPressed: (){
               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Modifica()),
-                );
-            },
-            icon: Icon(Icons.edit),
-            color: Colors.white,
-            
-            
-            ),
-
-          IconButton(
-            onPressed: (){
-              Navigator.push(
                 context, 
                 MaterialPageRoute(builder: (context) => Settings_Page()));
 
