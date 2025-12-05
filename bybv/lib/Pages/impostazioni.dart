@@ -2,6 +2,7 @@ import 'package:bybv/Pages/modifica.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bybv/Theme/ThemeProvider.dart';
+import 'package:bybv/Geolocalization/ricerca_palestra_page.dart';
 
 
 class Settings_Page extends StatelessWidget {
@@ -220,6 +221,23 @@ class Settings_Page extends StatelessWidget {
                   },
                 );
               },
+            ),
+          ),
+          Container(
+            color: Theme.of(context).cardColor,
+            child: ListTile(
+              leading: Icon(Icons.help, color: Theme.of(context).iconTheme.color),
+              title: Text(
+                "Cerca Palestra",
+                style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
+              ),
+              trailing: Icon(Icons.chevron_right, color: Theme.of(context).iconTheme.color?.withOpacity(0.7) ?? Colors.grey),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ricerca_palestra_page()),
+                );
+              }, 
             ),
           ),
           Container(
