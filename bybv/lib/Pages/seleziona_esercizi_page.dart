@@ -107,13 +107,7 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
   return Scaffold(
     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-<<<<<<< HEAD
-        backgroundColor: Colors.black,
-        title: const Text(
-          "Seleziona esercizi",
-          style: TextStyle(color: Colors.white),
-          ),
-=======
+
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).primaryColor,
         title: Text(
           "Seleziona esercizi",
@@ -121,7 +115,6 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
             color: Theme.of(context).textTheme.titleLarge?.color ?? Colors.white,
           ),
         ),
->>>>>>> cedd46e434f9836a62286dc58002fb0d23a0158a
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
