@@ -1,5 +1,10 @@
+import 'package:bybv/Pages/home_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
 
 class SelezionaEserciziPage extends StatefulWidget{
   @override
@@ -19,6 +24,80 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
     ];
   
   List<Map<String,String>> selezionati = [];
+  DateTime? giornoAllenamento;
+
+
+    String _dateId(DateTime dt){
+      final d = _stripTime(dt);
+      final y = d.year.toString().padLeft(4, '0');  
+      final m = d.month.toString().padLeft(2, '0'); // se inserisco mese 2 inserirà in automatico 02 (arriva a 2 cifre inserendo 0 from left)
+      final day = d.day.toString().padLeft(2, '0');
+
+      return '$y-$m-$day';
+    }
+
+    DateTime _stripTime(DateTime dt) {
+      return DateTime(dt.year, dt.month, dt.day);
+    }
+
+  Future<void> salvaAllenamento() async{
+    final user = FirebaseAuth.instance.currentUser;
+    if(user == null) return;
+
+    final allenamentiCollection = FirebaseFirestore.instance.collection('users').doc(user.uid).collection('allenamenti');
+
+    final workoutsCollection = FirebaseFirestore.instance.collection('users').doc(user.uid).collection('workouts');
+
+    await allenamentiCollection.add({
+      'giorno': giornoAllenamento,
+      'esercizi': selezionati,  // salva tutti gli esercizi selezionati insieme
+    });
+
+    final d = _stripTime(giornoAllenamento!);
+    final id = _dateId(d);
+    await workoutsCollection.doc(id).set({
+      'date': id,
+      'createdAt': FieldValue.serverTimestamp(),  // si può evitate ma va a salvare in firestore a che ora creo l'allenamento --> in un futuro aggiornamento dell'app potremmo utilizzarlo per capire quanto dura l'allenamento 
+    });
+  }
+
+  // Future<void> salvaGiornoEAggiornaCalendario(){
+
+  // }
+
+  void _showDatePicker() {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (_) => Container(
+        height: 250,
+        color: Colors.black,
+        child: SafeArea(
+          top: false,
+          child: CupertinoTheme(
+            data: const CupertinoThemeData(
+              brightness: Brightness.dark,
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.date,
+              initialDateTime: giornoAllenamento ?? DateTime.now(),
+              maximumDate: DateTime.now(),
+              onDateTimeChanged: (newDate) {
+                setState(() {
+                  giornoAllenamento = newDate;
+                });
+              },
+            ),
+          )
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context){
@@ -29,7 +108,10 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
     backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text("Seleziona esercizi"),
+        title: const Text(
+          "Seleziona esercizi",
+          style: TextStyle(color: Colors.white),
+          ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -39,6 +121,46 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
 
     body: Column(
       children: [
+        Row(
+              children: [
+                Padding(
+                  padding: EdgeInsetsGeometry.only(left: screenWidth*0.04),
+                    child: SizedBox(
+                      width: screenWidth * 0.25,
+                      child: const Text(
+                        "Giorno allenamento",
+                        style: TextStyle(color: Colors.white, fontSize: 15, fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(width: screenWidth*0.17),
+                  Expanded(
+                  child: GestureDetector(
+                    onTap: _showDatePicker,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            giornoAllenamento == null
+                                ? "Seleziona giorno"
+                                : "${giornoAllenamento!.day}/${giornoAllenamento!.month}/${giornoAllenamento!.year}",
+                            style: const TextStyle(color: Colors.white70, fontSize: 16),
+                          ),
+                          const Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ]
+                      )
+                    ),
+                  ),
+                 )
+              ],
+            ),
 
         Expanded(
           child: ListView.builder(
@@ -111,6 +233,25 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
             ) 
         )
       ],
+    ),
+    floatingActionButton: FloatingActionButton(
+      backgroundColor: Colors.blue,
+      child: Icon(Icons.check),
+      onPressed: () async{
+        if(giornoAllenamento == null){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Metti la data"))
+          );return;
+        }
+        await salvaAllenamento();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Allenamento salvato'))
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()));
+      }
+    
     ),
 
   );

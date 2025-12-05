@@ -97,7 +97,7 @@ class _AllenamentoPage extends State<AllenamentoPage>{
                     Icon(Icons.add, color: Colors.white, size: 24, fontWeight: FontWeight.bold),
                     SizedBox(width: screenWidth*0.05),
                     Text(
-                      "Inizia allenamento vuoto",
+                      "Crea allenamento",
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 18,
