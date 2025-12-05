@@ -45,7 +45,7 @@ class _AllenamentoPage extends State<AllenamentoPage>{
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.,
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
