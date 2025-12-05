@@ -109,9 +109,9 @@ class EserciziPage extends StatelessWidget{
 
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-      backgroundColor: Colors.black,
+      backgroundColor:Theme.of(context).appBarTheme.backgroundColor,
 
           centerTitle: true,  //centra il titolo
           title: Image.asset(
@@ -123,7 +123,7 @@ class EserciziPage extends StatelessWidget{
             onPressed: (){
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
           ),
           actions: [
             IconButton(
@@ -139,11 +139,12 @@ class EserciziPage extends StatelessWidget{
               
               ),
 
+            
             IconButton(
-              onPressed: (){}, //va inserito un navigator che porta alla pagina delle impostazioni delle applicazioni
-              icon: Icon(Icons.settings),
-              color: Colors.white,
-              ),
+              onPressed: () {}, //va inserito un navigator che porta alla pagina delle impostazioni delle applicazioni
+              icon: const Icon(Icons.settings),
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
 
             IconButton(onPressed: () async{
               await signOut();
@@ -153,7 +154,7 @@ class EserciziPage extends StatelessWidget{
               );
             },
             icon: Icon(Icons.logout),
-            color: Colors.white,
+            color:  Theme.of(context).colorScheme.onSurface ,
             ),
           ],
         ),
@@ -182,7 +183,7 @@ class EserciziPage extends StatelessWidget{
                 margin: EdgeInsets.symmetric(horizontal: screenWidth*0.025, vertical: screenHeight*0.005),
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.grey[800],
+                  color: Theme.of(context).colorScheme.surfaceContainer,
                   borderRadius: BorderRadius.circular(12),
                 ), 
                 child: Row(

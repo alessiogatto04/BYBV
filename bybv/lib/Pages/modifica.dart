@@ -78,15 +78,15 @@ class _ModificaState extends State<Modifica> {
       context: context,
       builder: (_) => Container(
         height: 250,
-        color: Colors.black,
+        color: Theme.of(context).dialogBackgroundColor,
         child: SafeArea(
           top: false,
           child: CupertinoTheme(
-            data: const CupertinoThemeData(
-              brightness: Brightness.dark,
+            data: CupertinoThemeData(
+              brightness: Theme.of(context).brightness,
               textTheme: CupertinoTextThemeData(
                 dateTimePickerTextStyle: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                   fontSize: 20,
                 ),
               ),
@@ -158,13 +158,13 @@ class _ModificaState extends State<Modifica> {
 
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 50, 50, 50),
-        title: const Text(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).primaryColor,
+        title: Text(
           "Modifica Profilo",
           style: TextStyle(
-            color: Colors.white,
+            color: Theme.of(context).textTheme.titleLarge?.color ?? Colors.white,
             fontFamily: 'Poppins',
             fontSize: 18,
           ),
@@ -173,7 +173,7 @@ class _ModificaState extends State<Modifica> {
           onPressed: () {
             Navigator.pop(context);
           }, //TORNA ALLA PAGINA DI PRIMA NON SALVANDO
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
         ),
         actions: [
           TextButton(
@@ -185,15 +185,21 @@ class _ModificaState extends State<Modifica> {
                   await saveSex();
                   await saveDateOfBirth();
                   ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Dati salvati!')),
+                    SnackBar(
+                      content: Text('Dati salvati!'),
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                   );
                   Navigator.push(
                     context, 
                     MaterialPageRoute(builder: (context) => HomePage()));
                 }, //TORNA ALLA PAGINA DI PRIMA SALVANDO TUTTI I DATI E CAMBIAMENTI
-            child: const Text(
+            child: Text(
               "Fatto",
-              style: TextStyle(fontSize: 18, color: Colors.white),
+              style: TextStyle(
+                fontSize: 18, 
+                color: Theme.of(context).textTheme.titleLarge?.color ?? Colors.white
+              ),
             ),
           ),
         ],
@@ -209,7 +215,7 @@ class _ModificaState extends State<Modifica> {
                 children: [
                   CircleAvatar(
                     radius: screenWidth * 0.12,
-                    backgroundColor: Colors.black,
+                    backgroundColor: Theme.of(context).cardColor,
                     backgroundImage: const AssetImage("images/imgprofile.png"),
                   ),
                 ],
@@ -218,9 +224,12 @@ class _ModificaState extends State<Modifica> {
 
             SizedBox(height: screenHeight * 0.015),
 
-            const Text(
+            Text(
               "Dati personali",
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7) ?? Colors.grey, 
+                fontSize: 14
+              ),
             ),
 
             SizedBox(height: screenHeight * 0.02),
@@ -229,18 +238,23 @@ class _ModificaState extends State<Modifica> {
               children: [
                 SizedBox(
                   width: screenWidth * 0.25,
-                  child: const Text(
+                  child: Text(
                     "Nome",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white, 
+                      fontSize: 16
+                    ),
                   ),
                 ),
                 Expanded(
                   child: TextField(
                     controller: nameController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
+                    style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
+                    decoration: InputDecoration(
                       hintText: "Inserisci nome",
-                      hintStyle: TextStyle(color: Colors.grey),
+                      hintStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5) ?? Colors.grey
+                      ),
                       border: InputBorder.none,
                     ),
                   ),
@@ -248,24 +262,29 @@ class _ModificaState extends State<Modifica> {
               ],
             ),
 
-            Divider(color: Colors.grey),
+            Divider(color: Theme.of(context).dividerColor),
 
             Row(
               children: [
                 SizedBox(
                   width: screenWidth * 0.25,
-                  child: const Text(
+                  child: Text(
                     "Username",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white, 
+                      fontSize: 16
+                    ),
                   ),
                 ),
                 Expanded(
                   child: TextField(
                     controller: usernameController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
+                    style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
+                    decoration: InputDecoration(
                       hintText: "Inserisci username",
-                      hintStyle: TextStyle(color: Colors.grey),
+                      hintStyle: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5) ?? Colors.grey
+                      ),
                       border: InputBorder.none,
                     ),
                   ),
@@ -273,15 +292,18 @@ class _ModificaState extends State<Modifica> {
               ],
             ),
 
-            Divider(color: Colors.grey),
+            Divider(color: Theme.of(context).dividerColor),
 
             Row(
               children: [
                 SizedBox(
                   width: screenWidth * 0.25,
-                  child: const Text(
+                  child: Text(
                     "Altezza ",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white, 
+                      fontSize: 16
+                    ),
                   ),
                 ),
                 Expanded(
@@ -289,6 +311,16 @@ class _ModificaState extends State<Modifica> {
                     minValue: 60, 
                     maxValue: 235,
                     value: height.clamp(60, 235),
+                    textStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5) ?? Colors.grey,
+                      fontSize: 20,
+                    ),
+                    selectedTextStyle: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 28,
+                    ),
+                    itemHeight: 50,
+                    itemWidth: 60,
                     onChanged: (v){
                       setState(() {
                         height = v;
@@ -305,9 +337,12 @@ class _ModificaState extends State<Modifica> {
               children: [
                 SizedBox(
                   width: screenWidth * 0.25,
-                  child: const Text(
+                  child: Text(
                     "Sesso",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white, 
+                      fontSize: 16
+                    ),
                   ),
                 ),
 
@@ -315,36 +350,45 @@ class _ModificaState extends State<Modifica> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       value: selectedSex,
-                      dropdownColor: Colors.black,
-                      icon: const Icon(
+                      dropdownColor: Theme.of(context).cardColor,
+                      icon: Icon(
                         Icons.arrow_drop_down,
-                        color: Colors.white,
+                        color: Theme.of(context).iconTheme.color,
                         size: 28,
                       ),
-                      hint: const Text(
+                      hint: Text(
                         "Seleziona",
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5) ?? Colors.grey, 
+                          fontSize: 16
+                        ),
                       ),
-                      items: const [
+                      items: [
                         DropdownMenuItem(
                           value: "M",
                           child: Text(
                             "Maschio",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white
+                            ),
                           ),
                         ),
                         DropdownMenuItem(
                           value: "F",
                           child: Text(
                             "Femmina",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white
+                            ),
                           ),
                         ),
                         DropdownMenuItem(
                           value: "N",
                           child: Text(
                             "Poco e niente",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white
+                            ),
                           ),
                         ),
                       ],
@@ -359,15 +403,18 @@ class _ModificaState extends State<Modifica> {
               ],
             ),
 
-            Divider(color: Colors.grey),
+            Divider(color: Theme.of(context).dividerColor),
 
             Row(
               children: [
                 SizedBox(
                   width: screenWidth * 0.25,
-                  child: const Text(
+                  child: Text(
                     "Nascita",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white, 
+                      fontSize: 16
+                    ),
                   ),
                 ),
 
@@ -383,11 +430,14 @@ class _ModificaState extends State<Modifica> {
                             dataDiNascita == null
                                 ? "Seleziona data di nascita"
                                 : "${dataDiNascita!.day}/${dataDiNascita!.month}/${dataDiNascita!.year}",
-                            style: const TextStyle(color: Colors.white, fontSize: 16),
+                            style: TextStyle(
+                              color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white, 
+                              fontSize: 16
+                            ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.arrow_drop_down,
-                            color: Colors.white,
+                            color: Theme.of(context).iconTheme.color,
                             size: 28,
                           ),
                         ]

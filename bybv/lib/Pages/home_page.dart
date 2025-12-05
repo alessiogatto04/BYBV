@@ -133,9 +133,9 @@ class _HomePageState extends State<HomePage> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
 
         centerTitle: true,  //centra il titolo
         title: Image.asset(
@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
 
             }, //va inserito un navigato che porta alla pagina delle impostazioni delle applicazioni
             icon: Icon(Icons.settings),
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onSurface,
             ),
 
           IconButton(onPressed: () async{
@@ -185,13 +185,13 @@ class _HomePageState extends State<HomePage> {
               );
           },
           icon: Icon(Icons.logout),
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onSurface,
           ),
          
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).navigationBarTheme.backgroundColor,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         currentIndex: 1,
@@ -307,12 +307,12 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SizedBox(width: screenWidth*0.08),
                 Expanded(
-                  child: ElevatedButton(onPressed: (){},
+                  child: ElevatedButton(
+                    onPressed: (){},
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10) 
                       ),
-                      backgroundColor: const Color.fromARGB(255, 50, 50, 50)
                     ),
                     child: Text(
                     "Statistiche",
@@ -335,7 +335,6 @@ class _HomePageState extends State<HomePage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)
                       ),
-                      backgroundColor: const Color.fromARGB(255, 50, 50, 50)
                     ),
                     child: Text(
                       "Esercizi",

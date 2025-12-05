@@ -11,8 +11,6 @@ class AllenamentoPage extends StatefulWidget{
   State<AllenamentoPage> createState() => _AllenamentoPage();
 }
 
-class _AllenamentoPage extends State<AllenamentoPage>{
-
   // @override
   // void initState(){
   //   super.initState();
@@ -39,17 +37,19 @@ class _AllenamentoPage extends State<AllenamentoPage>{
   //   }
   // }
 
+class _AllenamentoPage extends State<AllenamentoPage>{
+
   @override
   Widget build(BuildContext context){
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor, 
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color), 
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -58,7 +58,7 @@ class _AllenamentoPage extends State<AllenamentoPage>{
               fontFamily: 'Padding',
               fontWeight: FontWeight.bold,
               fontSize: 22,
-              color: Colors.white,
+              color: Theme.of(context).appBarTheme.titleTextStyle?.color ?? Colors.white, 
             ),
         ),
         centerTitle: true,
@@ -90,18 +90,18 @@ class _AllenamentoPage extends State<AllenamentoPage>{
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  backgroundColor: const Color.fromARGB(255, 50, 50, 50)
+                  backgroundColor: Theme.of(context).colorScheme.surface, 
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.add, color: Colors.white, size: 24, fontWeight: FontWeight.bold),
+                    Icon(Icons.add, color: Theme.of(context).iconTheme.color, size: 24), 
                     SizedBox(width: screenWidth*0.05),
                     Text(
                       "Inizia allenamento vuoto",
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 18,
-                        color: Colors.white,
+                        color: Theme.of(context).textTheme.bodyLarge?.color, 
                       ),
                     )
                   ]
@@ -122,7 +122,7 @@ class _AllenamentoPage extends State<AllenamentoPage>{
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontSize: 16,
-                  color: Colors.white70,
+                  color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7), 
                 ),
               )
             )
@@ -130,13 +130,9 @@ class _AllenamentoPage extends State<AllenamentoPage>{
 
           SizedBox(height: screenHeight*0.05),
 
-
-
         ]
       ),
 
     );
   }
 }
-
-
