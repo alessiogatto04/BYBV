@@ -1,31 +1,38 @@
-class Place{
-  //questa classe serve per salvare le informazioni di ogni palestra
-  final String placeId;      // ID univoco della palestra
-  final String name;         // Nome della palestra
-  final String address;      // Indirizzo
-  final double lat;         // Latitudine (coordinata geografica)
-  final double lng;         // Longitudine (coordinata geografica)
+class Place {
+
+    //questa classe serve per salvare le informazioni di ogni palestra
+  final String id; // ID univoco della palestra
+  final String nome;  // Indirizzo
+  final String indirizzo;
+  final double latitudine; // Latitudine (coordinata geografica)
+  final double longitudine; // Longitudine (coordinata geografica)
 
   //Crea un oggetto Place con tutti i dati necessari. required significa che sono obbligatori.
   Place({
-    required this.placeId,
-    required this.name,
-    required this.address,
-    required this.lat,
-    required this.lng,
-    });
-  
+    required this.id,
+    required this.nome,
+    required this.indirizzo,
+    required this.latitudine,
+    required this.longitudine,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nome': nome,
+      'indirizzo': indirizzo,
+      'latitudine': latitudine,
+      'longitudine': longitudine,
+    };
+  }
+
   factory Place.fromJson(Map<String, dynamic> json) {
-    // 1. Accede alle coordinate geografiche
-    final geometry = json['geometry']['location'];
-    
-    // 2. Crea e restituisce un oggetto Place
     return Place(
-      placeId: json['place_id'],  // ID univoco del luogo
-      name: json['name'] ?? 'Senza nome',  // Nome, con valore di default
-      address: json['vicinity'] ?? json['formatted_address'] ?? '',  // Indirizzo
-      lat: (geometry['lat'] as num).toDouble(),  // Converte latitudine
-      lng: (geometry['lng'] as num).toDouble(),  // Converte longitudine
+      id: json['id'] as String,
+      nome: json['nome'] as String,
+      indirizzo: json['indirizzo'] as String,
+      latitudine: json['latitudine'] as double,
+      longitudine: json['longitudine'] as double,
     );
   }
 }

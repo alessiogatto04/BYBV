@@ -4,12 +4,12 @@ import 'package:geolocator/geolocator.dart';
 // questa classe gestisce l'accesso alla posizione GPS del dispositivo . E' essenziale per alcune funzionalità come quella di trovare le palestre vicine
 // Future<Position>: Restituisce una Position (dati GPS) in modo asincrono
 class LocationService {
-  static Future<Position> getCurrentPosition() async {
+  Future<Position> getCurrentPosition() async {
     
     //Fase 1 , controlla se il GPS è attivo , se si continua . Se non è attivo lancia un exception
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // AGGIUNTA: Usiamo un'eccezione personalizzata per identificare meglio questo caso specifico
+      //  Usiamo un'eccezione personalizzata per identificare meglio questo caso specifico
       throw LocationServiceDisabledException(
         'Servizi di localizzazione disabilitati. '
         'Attivali nelle impostazioni del dispositivo.'
@@ -36,7 +36,7 @@ class LocationService {
     //Fase 3: controllo permessi negati permanentemente . Verifica se l'utente ha bloccato permanentemente i permessi(cioè nel caso in cui l'utente ha selezionato "Non consentire" , o "NOn chiedere più").
     // Soluzione : l'utente deve andare nelle impostazioni del telefono e abilitare manualmente il permesso.
     if (permission == LocationPermission.deniedForever) {
-       // AGGIUNTA: Usiamo un'eccezione personalizzata per questo caso specifico
+       //Usiamo un'eccezione personalizzata per questo caso specifico
        throw LocationPermissionPermanentlyDeniedException(
         'Permessi di localizzazione negati permanentemente. '
         'Vai nelle impostazioni dell\'app per abilitarli manualmente.'
@@ -66,14 +66,14 @@ class LocationService {
   // AGGIUNTA: Metodo per aprire le impostazioni di localizzazione del dispositivo
   // Questo metodo apre direttamente la schermata delle impostazioni GPS del telefono
   // Dove l'utente può attivare/disattivare la localizzazione
-  static Future<void> openLocationSettings() async {
+  Future<void> openLocationSettings() async {
     await Geolocator.openLocationSettings();
   }
   
-  // AGGIUNTA: Metodo per aprire le impostazioni specifiche dell'app
+  // Metodo per aprire le impostazioni specifiche dell'app
   // Questo metodo apre le impostazioni della tua app BYBV nel telefono
   // Dove l'utente può gestire i permessi (Posizione, Fotocamera, etc.)
-  static Future<void> openAppSettings() async {
+  Future<void> openAppSettings() async {
     await Geolocator.openAppSettings();
   }
 }
@@ -89,7 +89,7 @@ class LocationServiceDisabledException implements Exception {
   String toString() => 'LocationServiceDisabledException: $message';
 }
 
-// AGGIUNTA: Eccezione personalizzata per identificare quando i permessi sono stati negati permanentemente
+// Eccezione personalizzata per identificare quando i permessi sono stati negati permanentemente
 // Questa eccezione viene lanciata quando l'utente ha selezionato "Non chiedere più"
 // o ha bloccato i permessi nelle impostazioni dell'app
 class LocationPermissionPermanentlyDeniedException implements Exception {

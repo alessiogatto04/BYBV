@@ -3,10 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bybv/Theme/ThemeProvider.dart';
 import 'package:bybv/Geolocalization/ricerca_palestra_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 
-class Settings_Page extends StatelessWidget {
+class Settings_Page extends StatefulWidget { //L'ho dovuta mettere statefull la pagina di impostazioni perchè mi serve il setstate() nella ricerca della palestra
   const Settings_Page({super.key});
+
+  @override
+  State<Settings_Page> createState() => _Settings_PageState();
+}
+class _Settings_PageState extends State<Settings_Page> { 
   // MI creo questa funzione helper per la conversione in stringa dello stato attuale cosi da visualizzarlo nel riga del tema il tema attuale
   String getThemeLabel(ThemeMode mode) {
     switch (mode) {
@@ -18,6 +25,78 @@ class Settings_Page extends StatelessWidget {
         return 'Sistema';
     }
   }
+  // Questa funzione mostra quale palestra è salvata
+  Widget _buildSelectedGymSubtitle() {
+    return FutureBuilder<String?>(
+      // FutureBuilder permette di eseguire codice asincrono
+      
+      future: _getSelectedGymName(),
+      // Chiama la funzione che legge la palestra salvata
+      
+      builder: (context, snapshot) {
+        // snapshot contiene il risultato della Future
+        
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Se ancora sta caricando
+          return const SizedBox.shrink();
+          // Non mostrare niente
+        }
+        
+        if (snapshot.hasData && snapshot.data != null) {
+          // Se ha trovato una palestra salvata
+          return Text(
+            snapshot.data!,
+            // Mostra il nome della palestra
+            
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodySmall?.color,
+              fontSize: 12,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            // Se il nome è troppo lungo, taglia e metti "..."
+          );
+        }
+        
+        // Se non c'è nessuna palestra salvata
+        return Text(
+          'Nessuna palestra scelta',
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodySmall?.color,
+            fontSize: 12,
+          ),
+        );
+      },
+    );
+  }
+
+  // Questa funzione legge la palestra salvata da SharedPreferences
+  Future<String?> _getSelectedGymName() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      // prefs accede ai dati salvati nel telefono
+      
+      final gymJson = prefs.getString('selected_gym'); // è come un dizionario il sharedPreferences quindi ci accede tramite questa stringa e legge la chiave
+      // Leggi la palestra salvata
+      
+      if (gymJson != null) {
+        // Se c'è una palestra salvata
+        final gymData = jsonDecode(gymJson);
+        // Trasforma il JSON in un Map
+        
+        return gymData['nome'] as String;
+        // Restituisci il nome della palestra
+      }
+      
+      return null;
+      // Se non c'è nessuna palestra, ritorna null
+      
+    } catch (e) {
+      return null;
+      // Se c'è un errore, ritorna null
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -226,17 +305,29 @@ class Settings_Page extends StatelessWidget {
           Container(
             color: Theme.of(context).cardColor,
             child: ListTile(
-              leading: Icon(Icons.help, color: Theme.of(context).iconTheme.color),
+              leading: Icon(Icons.fitness_center, color: Theme.of(context).iconTheme.color),
+              // ^ Cambio icona da "help" a "fitness_center" (più appropriata)
+              
               title: Text(
-                "Cerca Palestra",
+                "Palestra",
                 style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
               ),
+              
+              subtitle: _buildSelectedGymSubtitle(),
+              //Mostra quale palestra è salvata
+              
               trailing: Icon(Icons.chevron_right, color: Theme.of(context).iconTheme.color?.withOpacity(0.7) ?? Colors.grey),
-              onTap: (){
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (_) => const ricerca_palestra_page()),
-                // );
+              
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const GymSearchPage()),
+                  // ^ Naviga a GymSearchPage quando clicchi
+                ).then((_) {
+                  // then() si chiama quando torni indietro
+                  setState(() {});
+                  // setState() aggiorna la pagina per mostrare la nuova palestra salvata se viene cambiata
+                });
               }, 
             ),
           ),
