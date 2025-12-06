@@ -56,20 +56,13 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
 
     final allenamentiCollection = FirebaseFirestore.instance.collection('users').doc(user.uid).collection('allenamenti');
 
-    final workoutsCollection = FirebaseFirestore.instance.collection('users').doc(user.uid).collection('workouts');
 
     await allenamentiCollection.add({
       'giorno': giornoAllenamento,
       'esercizi': selezionati,  // salva tutti gli esercizi selezionati insieme
     });
-
-    final d = _stripTime(giornoAllenamento!);
-    final id = _dateId(d);
-    await workoutsCollection.doc(id).set({
-      'date': id,
-      'createdAt': FieldValue.serverTimestamp(),  // si può evitate ma va a salvare in firestore a che ora creo l'allenamento --> in un futuro aggiornamento dell'app potremmo utilizzarlo per capire quanto dura l'allenamento 
-    });
   }
+   
 
   // Future<void> salvaGiornoEAggiornaCalendario(){
 
@@ -191,6 +184,144 @@ class _SelezionaEserciziPageState extends State<SelezionaEserciziPage>{
                       selezionati.add(esercizio);
                     }
                   });
+                  if(!isSelected){
+                   showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true, //permette di fare andare il showModalBottom oltre la metà. sennò flutter lo bloccherebbe a metà
+                    builder: (context){
+
+                      final TextEditingController serieController = TextEditingController(); // serve per gestire il TextField per il numero di serie.
+                      List<TextEditingController> repsControllers = [];
+                      List<TextEditingController> pesoControllers = [];
+
+                      int numeroSerie = 0;
+                      
+                      return StatefulBuilder(   //permette di avviare un mini setState locale valido solo per  il builder di cui faccio il return
+                        builder: (context, setStateModal){  //setStateModal è la funzione setState locale che StateFulBuilder passa automaticamente. AGGIORNA SOLO IL CONTENUTO DELLO StatefulBuilder non il widget esterno.
+                          return SingleChildScrollView(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom,  //serve per spostare un widget verso l’alto quando appare la tastiera, in modo che non venga coperto.
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.all(20),
+                              height: screenHeight*0.75,
+                              color: Colors.transparent,
+                                
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Aggiungi le serie e le rep per ${esercizio['nome']}",
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+
+                                    SizedBox(height: screenHeight*0.04),
+
+                                    TextField(
+                                      controller: serieController,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        labelText: "Numero serie",
+                                        labelStyle: TextStyle(color: Colors.white70),
+                                         enabledBorder: UnderlineInputBorder(  //serve a "sottolineare" un campo quando è selezionato
+                                          borderSide: BorderSide(color: Colors.white54),
+                                        ),
+                                      ),
+                                      style: TextStyle(color: Colors.white),
+                                      onChanged: (value){    //passa il testo corrente come parametro --> quello inserito nel textfield
+                                        int n = int.tryParse(value) ?? 0;   //converte una stringa in un intero --> evita errori se non è un numero
+                                        if(n != numeroSerie){
+                                          numeroSerie = n;
+                                          repsControllers = List.generate(
+                                            numeroSerie,
+                                            (_) => TextEditingController(),   //crea dinamicamente numeroSerie di TextEditingController in maniera dinamica. (_) --> parametro anonimo poichè non serve 
+                                            );
+
+
+                                          pesoControllers = List.generate(
+                                            numeroSerie, 
+                                            (_) => TextEditingController(),
+                                          );
+
+                                          setStateModal((){});  //ricostruisce il builder alla fine delle modifiche
+                                        }
+                                      },
+                                    ),
+
+                                    SizedBox(height: screenHeight*0.03),
+
+                                    Expanded(
+                                      child: ListView.builder(
+                                        itemCount: numeroSerie,     //crea una lista scrollabile in base al numeroSerie
+                                        itemBuilder: (context, i){    //i = indice per indicare l'elemento i-esimo (da 0 a numeroSerie-1)
+                                          return Padding(
+                                            padding: EdgeInsets.symmetric(vertical: screenHeight*0.01),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: TextField(
+                                                    controller: repsControllers[i],
+                                                    keyboardType: TextInputType.number,
+                                                    decoration: InputDecoration(
+                                                      labelText: "Reps serie ${i+1}",
+                                                      labelStyle: TextStyle(color:Colors.white70),
+                                                    ),
+                                                    style: TextStyle(color: Colors.white),
+                                                  ),
+                                                ),
+                                                SizedBox(width: screenWidth*0.035),
+
+                                                Expanded(
+                                                  child: TextField(
+                                                    controller: pesoControllers[i],
+                                                    keyboardType: TextInputType.number,
+                                                    decoration: InputDecoration(
+                                                      labelText: "Peso serie ${i+1} (kg)",
+                                                      labelStyle: TextStyle(color: Colors.white70),
+                                                    ),
+                                                  ) 
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                        
+                                        )
+                                      ),
+
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: ElevatedButton(
+                                          onPressed: (){
+                                            List<Map<String, String>> serieDati = [];
+                                            for(int i = 0; i != numeroSerie; i++){
+                                              serieDati.add({
+                                                'reps' : repsControllers[i].text,
+                                                'peso' : pesoControllers[i].text,
+                                              });
+                                            }
+                                            esercizio['serie'] = numeroSerie.toString();
+                                            esercizio['dettagli'] = serieDati.toString();
+                                            Navigator.pop(context);
+                                          }, child: Text("Salva")),
+                                      )
+
+
+                                  ]
+                                ),
+                            ),
+                          );
+                        });
+                       
+                    },
+                    
+                    );
+
+                  }
                 },
 
                 child: Container(
