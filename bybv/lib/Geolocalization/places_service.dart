@@ -1,236 +1,167 @@
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bybv/Geolocalization/place.dart';
+
 // ============================================
-// PLACES SERVICE - RICERCA PALESTRE CON OPENSTREETMAP
+// PLACES SERVICE - GOOGLE PLACES API
 // ============================================
 // Questo file si occupa di cercare le palestre vicino a te
-// usando OpenStreetMap e l'API Overpass (COMPLETAMENTE GRATUITA!)
+// usando Google Places API (accurata e affidabile!)
 //
 // COME FUNZIONA?
 // 1. Ricevi latitudine e longitudine dalla LocationService
-// 2. Costruisci una query per Overpass API
-// 3. Fai una richiesta HTTP a Overpass
+// 2. Costruisci un URL con i parametri di ricerca
+// 3. Fai una richiesta HTTP a Google Places API
 // 4. Ricevi i dati delle palestre in formato JSON
 // 5. Trasformi i dati JSON in oggetti Place
 // 6. Restituisci la lista di palestre
 
-// ^ Importa il modello Place che hai già creato
-
 class PlacesService {
+  // ============================================
+  // CHIAVE API DI GOOGLE
+  // ============================================
+  // Questa chiave viene da Google Cloud Console
+  // Domani la genererai e la inserirai qui
+  // IMPORTANTE: Non condividere questa chiave con nessuno!
+  
+  final String apiKey = 'TUA_CHIAVE_API_GOOGLE_QUI';
+  // ^ Sostituisci con la vera chiave quando l'avrai
+  // Esempio: 'AIzaSyD5Nnk8mV7pQ9xL2wB4cJ6kM3nO0pR1sT'
+
   // ============================================
   // METODO PRINCIPALE: getNearbyGyms()
   // ============================================
   // Questa funzione cerca tutte le palestre vicino a una posizione
+  // usando Google Places API
   //
   // INPUT:
-  //   - latitude: la tua latitudine GPS (es: 38.1234)
-  //   - longitude: la tua longitudine GPS (es: 13.3621)
+  //   - latitude: la tua latitudine GPS (es: 39.2842 per Cosenza)
+  //   - longitude: la tua longitudine GPS (es: 16.2591 per Cosenza)
   //
   // OUTPUT:
   //   - List<Place>: una lista di palestre trovate
   //
-  // È asincrono (Future) perché deve fare una richiesta HTTP
-  // che potrebbe impiegare tempo
+  // È asincrono (Future) perché fa una richiesta HTTP
+  // che potrebbe impiegare tempo a ricevere risposta
 
   Future<List<Place>> getNearbyGyms(double latitude, double longitude) async {
     // ============================================
-    // STEP 1: Costruisci la QUERY per Overpass
+    // STEP 1: Costruisci l'URL della richiesta
     // ============================================
-    // Overpass API è un servizio che interroga OpenStreetMap
-    // Scriviamo una query per cercare palestre
-    //
-    // La query dice:
-    // - Cerca nodi (node) o linee (way) con tag leisure="fitness_centre"
-    // - Entro 5000 metri dalla mia posizione
-    // - Dammi il risultato in JSON
-
-    final String overpassQuery = '''
-      [out:json];
-      (
-        node["leisure"="fitness_centre"](around:5000,$latitude,$longitude);
-        way["leisure"="fitness_centre"](around:5000,$latitude,$longitude);
-        node["leisure"="sports_centre"](around:5000,$latitude,$longitude);
-        way["leisure"="sports_centre"](around:5000,$latitude,$longitude);
-      );
-      out center;
-    ''';
-    // ^ Cerchiamo sia "fitness_centre" che "sports_centre"
-    //   perché gli edifici possono essere taggati in modo diverso
-
-    // ============================================
-    // STEP 2: Costruisci l'URL completo
-    // ============================================
-    // L'URL ha due parti:
-    // 1. L'indirizzo del server Overpass
-    // 2. La query codificata (Uri.encodeComponent)
-    //
-    // Uri.encodeComponent() trasforma spazi e caratteri speciali
-    // in un formato che gli URL possono capire
-    // Es: "leisure" rimane "leisure", ma gli spazi diventano "%20"
-
-    final String url = 
-        'https://overpass-api.de/api/interpreter?data=${Uri.encodeComponent(overpassQuery)}';
-    // ^ Questo è l'URL finale che manderemo al server Overpass
+    // Google Places API ha questo formato:
+    // https://maps.googleapis.com/maps/api/place/nearbysearch/json
+    // ?location=LATITUDINE,LONGITUDINE
+    // &radius=RAGGIO_IN_METRI
+    // &type=TYPE
+    // &key=LA_TUA_CHIAVE
+    
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
+        '?location=$latitude,$longitude'
+        '&radius=50000'  // 50 km di raggio (puoi aumentare se serve)
+        '&type=gym'      // Cerca specificamente "gym" (palestre)
+        '&key=$apiKey';
+    // ^ Questo è l'URL completo che manderemo a Google
 
     try {
       // ============================================
-      // STEP 3: Fai la RICHIESTA HTTP
+      // STEP 2: Fai la RICHIESTA HTTP a Google
       // ============================================
-      // http.get() manda una richiesta al server Overpass
-      // Uri.parse() trasforma la stringa in un oggetto Uri
-      // Aspettiamo la risposta (await)
+      // http.get() manda una richiesta GET a Google Places API
+      // Uri.parse() trasforma la stringa in un URL valido
+      // await aspetta che la risposta arrivi dal server
 
       final response = await http.get(Uri.parse(url));
       // response contiene:
-      // - statusCode: 200 se tutto va bene, 404/500 se errore
-      // - body: il testo della risposta (JSON)
+      // - statusCode: 200 se tutto è andato bene, altrimenti un errore
+      // - body: il testo della risposta (in formato JSON)
 
       // ============================================
-      // STEP 4: Controlla se la richiesta è andata bene
+      // STEP 3: Controlla se la richiesta è andata a buon fine
       // ============================================
-      // Il codice 200 significa "OK" (successo)
-      // Se è diverso (404, 500, ecc) significa che c'è stato un errore
+      // 200 = successo
+      // 400+ = errore (chiave errata, API non abilitata, limite superato, ecc)
 
       if (response.statusCode == 200) {
+        
         // ============================================
-        // STEP 5: DECODIFICA il JSON
+        // STEP 4: DECODIFICA il JSON ricevuto da Google
         // ============================================
-        // response.body è una stringa JSON
-        // jsonDecode() la trasforma in un oggetto Dart che possiamo leggere
-        //
-        // ESEMPIO DI JSON RICEVUTO:
+        // Google ritorna un JSON come questo:
         // {
-        //   "elements": [
+        //   "results": [
         //     {
-        //       "type": "node",
-        //       "id": 12345,
-        //       "lat": 38.1234,
-        //       "lon": 13.3621,
-        //       "tags": {
-        //         "name": "Palestra Fit Plus",
-        //         "addr:street": "Via Roma"
-        //       }
+        //       "name": "Palestra Fit Plus",
+        //       "vicinity": "Via Roma 42, Cosenza",
+        //       "geometry": {
+        //         "location": {
+        //           "lat": 39.2842,
+        //           "lng": 16.2591
+        //         }
+        //       },
+        //       "place_id": "ChIJ..."
         //     },
         //     ...
         //   ]
         // }
-
-        final json = jsonDecode(response.body);
-        // json è adesso un Map (dizionario) che contiene i dati
         
-        final List<dynamic> elements = json['elements'] ?? [];
-        // Estraiamo la lista "elements" dal JSON
-        // Se non esiste, usiamo una lista vuota ([])
-        // "elements" contiene tutte le palestre trovate
+        final json = jsonDecode(response.body);
+        // jsonDecode trasforma la stringa JSON in un Map (dizionario) Dart
+        
+        final List<dynamic> results = json['results'] ?? [];
+        // Estraiamo l'array "results" che contiene tutte le palestre trovate
+        // ?? [] significa: se 'results' non esiste, usa una lista vuota
 
         // ============================================
-        // STEP 6: Trasforma ogni elemento in un oggetto Place
+        // STEP 5: Trasforma ogni risultato in un oggetto Place
         // ============================================
-        // "elements" è una lista di dati grezzi
-        // Dobbiamo trasformare ogni elemento in un oggetto Place
-        // che possiamo usare nella nostra app
+        // Google ritorna dati "grezzi", noi li trasformiamo in oggetti Place
+        // così da poterli usare in tutta l'app
 
-        List<Place> gyms = [];
-        // Creiamo una lista vuota dove aggiungeremo le palestre
-
-        // Cicliamo su ogni elemento della risposta
-        for (var element in elements) {
-          try {
-            // ============================================
-            // ESTRAI I DATI DELL'ELEMENTO
-            // ============================================
-
-            // Ottieni i tag (metadati) dell'elemento
-            final tags = element['tags'] ?? {};
-            // tags contiene cose come "name", "addr:street", ecc.
-
-            // Ottieni il nome della palestra
-            final name = tags['name'] ?? 'Palestra senza nome';
-            // Se non c'è un nome, usiamo "Palestra senza nome"
-
-            // ============================================
-            // OTTIENI LE COORDINATE GPS
-            // ============================================
-            // Ci sono due modi per avere le coordinate:
-            // 1. Se è una "way" (area), usa il "center" (centro dell'area)
-            // 2. Se è un "node" (punto), usa direttamente lat/lon
-
-            double? lat;  // ? significa "può essere null"
-            double? lon;
+        return results.map((place) {
+          // place è un singolo elemento della lista di risultati
+          
+          return Place(
+            // place_id è l'ID univoco della palestra su Google
+            id: place['place_id'],
             
-            if (element['center'] != null) {
-              // È una way (area), usa il centro
-              lat = element['center']['lat'];
-              lon = element['center']['lon'];
-            } else if (element['lat'] != null) {
-              // È un node (punto), usa le coordinate dirette
-              lat = element['lat'];
-              lon = element['lon'];
-            }
-
-            // ============================================
-            // COSTRUISCI L'INDIRIZZO
-            // ============================================
-            // L'indirizzo è composto da più parti
-            // che estraiamo dai tags
-
-            final street = tags['addr:street'] ?? '';      // Via/Strada
-            final housenumber = tags['addr:housenumber'] ?? ''; // Numero civico
-            final city = tags['addr:city'] ?? 'Palermo';   // Città
-
-            // Combina le parti per fare un indirizzo completo
-            String indirizzo = street;
-            if (housenumber.isNotEmpty) {
-              indirizzo += ', $housenumber';
-            }
-            if (indirizzo.isEmpty) {
-              // Se non abbiamo via, usa almeno la città
-              indirizzo = city;
-            }
-
-            // ============================================
-            // CREA L'OGGETTO PLACE SE ABBIAMO COORDINATE VALIDE
-            // ============================================
-            // Aggiungiamo la palestra solo se abbiamo lat e lon
-            // (sono obbligatorie!)
-
-            if (lat != null && lon != null) {
-              gyms.add(Place(
-                id: element['id'].toString(),  // Converti l'ID in stringa
-                nome: name,
-                indirizzo: indirizzo.isNotEmpty 
-                    ? indirizzo 
-                    : 'Indirizzo non disponibile',
-                latitudine: lat,
-                longitudine: lon,
-              ));
-              // ^ Abbiamo aggiunto una palestra alla lista!
-            }
-
-          } catch (e) {
-            // Se c'è un errore mentre processiamo un elemento,
-            // lo ignoriamo e continuiamo con il prossimo
-            // (continue significa "vai al prossimo elemento del ciclo")
-            continue;
-          }
-        }
-
-        // ============================================
-        // RESTITUISCI LA LISTA DI PALESTRE
-        // ============================================
-        return gyms;
-        // La lista è pronta per essere usata nella UI!
+            // name è il nome della palestra (es: "Palestra Fit Plus")
+            nome: place['name'],
+            
+            // vicinity è l'indirizzo approssimativo della palestra
+            // (es: "Via Roma 42, Cosenza")
+            indirizzo: place['vicinity'],
+            
+            // geometry.location contiene le coordinate GPS
+            // 'lat' = latitudine (nord/sud)
+            // 'lng' = longitudine (est/ovest)
+            latitudine: place['geometry']['location']['lat'],
+            longitudine: place['geometry']['location']['lng'],
+          );
+          
+        }).toList();
+        // toList() trasforma il risultato del map() in una List<Place>
 
       } else {
-        // Se lo statusCode non è 200, c'è stato un errore
-        throw Exception('Errore nella risposta (${response.statusCode})');
+        // Se la risposta non è 200, c'è stato un errore
+        // Possibili errori:
+        // - 400: richiesta malformata
+        // - 403: chiave API non autorizzata per questa API
+        // - 429: hai superato il limite di richieste al mese
+        // - 500: errore server di Google
+        
+        throw Exception(
+          'Errore Google Places API (${response.statusCode}). '
+          'Corpo della risposta: ${response.body}'
+        );
+        // Mostriamo il codice errore e il corpo della risposta per debuggare
+
       }
 
     } catch (e) {
-      // Se succede qualcosa di inaspettato (es: no internet)
-      // lanciamo un'eccezione con il messaggio di errore
+      // Se succede qualcosa di inaspettato (es: no internet, timeout)
+      // catchiamo l'eccezione e la rilancia con un messaggio chiaro
+      
       throw Exception('Errore nella ricerca: $e');
     }
   }
@@ -240,13 +171,16 @@ class PlacesService {
 // COME SI USA QUESTO FILE?
 // ============================================
 //
+// Nel gym_search_page.dart:
+// 
 // final placesService = PlacesService();
-// final gyms = await placesService.getNearbyGyms(38.1234, 13.3621);
+// final gyms = await placesService.getNearbyGyms(39.2842, 16.2591);
 // // gyms è una lista di oggetti Place pronti per usare!
 //
-// // Adesso puoi accedere ai dati di ogni palestra:
+// Adesso puoi accedere ai dati di ogni palestra:
 // for (var gym in gyms) {
 //   print(gym.nome);        // es: "Palestra Fit Plus"
-//   print(gym.indirizzo);   // es: "Via Roma, 42"
-//   print(gym.latitudine);  // es: 38.1234
+//   print(gym.indirizzo);   // es: "Via Roma 42, Cosenza"
+//   print(gym.latitudine);  // es: 39.2842
+//   print(gym.longitudine); // es: 16.2591
 // }
