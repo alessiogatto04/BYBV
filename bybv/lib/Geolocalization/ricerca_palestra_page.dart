@@ -34,6 +34,10 @@ class GymSearchPage extends StatefulWidget {
 // Contiene la logica e i dati che cambiano nel tempo
 
 class _GymSearchPageState extends State<GymSearchPage> {
+  //controller per la barra di ricerca
+  final TextEditingController _searchController = TextEditingController();
+  //Lista originale completa
+  List<Place> _allGyms = [];
   // ============================================
   // VARIABILI DI STATO
   // ============================================
@@ -135,6 +139,8 @@ class _GymSearchPageState extends State<GymSearchPage> {
         _gyms = gyms;
         // Salva le palestre trovate
         
+         _allGyms = gyms;
+
         _isLoading = false;
         // Ferma lo spinner (abbiamo finito di caricare)
       });
@@ -156,6 +162,16 @@ class _GymSearchPageState extends State<GymSearchPage> {
       });
     }
   }
+  //Questo serve per la barra di ricerca cosi cerca solo per nome
+  void _filterGymsByName(String query) {
+    setState(() {
+      _gyms = _allGyms.where((gym) {
+        return gym.nome.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    });
+  }
+
+
 
   // ============================================
   // FUNZIONE: _selectGym()
@@ -251,10 +267,17 @@ class _GymSearchPageState extends State<GymSearchPage> {
         elevation: 0,
       ),
 
-      body: _buildBody(),
+      body: Column(
+        //Inseriamo la barra di ricerca 
+      children: [
+        _buildSearchBar(), // ✅ AGGIUNTO
+        Expanded(child: _buildBody()),
+          ],
+        ),
       // _buildBody() è la funzione qui sotto che costruisce il corpo
       // Cambia a seconda dello stato (caricamento, errore, risultati, vuoto)
 
+      // Widget della barra di ricerca 
       floatingActionButton: FloatingActionButton(
         // Bottone rotondo in basso a destra
         onPressed: _searchNearbyGyms,
@@ -393,6 +416,33 @@ class _GymSearchPageState extends State<GymSearchPage> {
     );
   }
 
+    // barra di ricerca per nome palestra
+    Widget _buildSearchBar() {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+        child: TextField(
+          controller: _searchController,
+          onChanged: _filterGymsByName,
+          decoration: InputDecoration(
+            hintText: 'Nome palestra',
+            prefixIcon: const Icon(Icons.search),
+            suffixIcon: _searchController.text.isNotEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      _searchController.clear();
+                      _filterGymsByName('');
+                    },
+                  )
+                : null,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+      );
+    }
+
   // ============================================
   // FUNZIONE: _buildGymTile()
   // ============================================
@@ -435,31 +485,3 @@ class _GymSearchPageState extends State<GymSearchPage> {
     );
   }
 }
-
-// ============================================
-// FLUSSO COMPLETO DELLA PAGINA
-// ============================================
-//
-// 1. PAGINA APRE
-//    → initState() viene chiamato
-//    → _searchNearbyGyms() viene chiamato automaticamente
-//
-// 2. _searchNearbyGyms() ESEGUE
-//    → setState() mostra lo spinner
-//    → Ottiene la posizione GPS
-//    → Cerca le palestre con Overpass API
-//    → setState() aggiorna _gyms con i risultati
-//
-// 3. LA UI SI AGGIORNA
-//    → _buildBody() viene chiamato
-//    → Se c'è caricamento → mostra spinner
-//    → Se c'è errore → mostra errore
-//    → Se _gyms è vuota → mostra "nessun risultato"
-//    → Se _gyms ha elementi → mostra lista
-//
-// 4. UTENTE CLICCA SU UNA PALESTRA
-//    → _selectGym(gym) viene chiamato
-//    → La palestra viene salvata in SharedPreferences
-//    → SnackBar mostra "Salvata!"
-//    → Navigator.pop() torna alla pagina precedente
-//    → La pagina Settings_Page si aggiorna e mostra la palestra

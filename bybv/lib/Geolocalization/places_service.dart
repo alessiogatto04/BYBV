@@ -166,21 +166,3 @@ class PlacesService {
     }
   }
 }
-
-// ============================================
-// COME SI USA QUESTO FILE?
-// ============================================
-//
-// Nel gym_search_page.dart:
-// 
-// final placesService = PlacesService();
-// final gyms = await placesService.getNearbyGyms(39.2842, 16.2591);
-// // gyms è una lista di oggetti Place pronti per usare!
-//
-// Adesso puoi accedere ai dati di ogni palestra:
-// for (var gym in gyms) {
-//   print(gym.nome);        // es: "Palestra Fit Plus"
-//   print(gym.indirizzo);   // es: "Via Roma 42, Cosenza"
-//   print(gym.latitudine);  // es: 39.2842
-//   print(gym.longitudine); // es: 16.2591
-// }
